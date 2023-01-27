@@ -7,6 +7,8 @@ import {
   NgZone,
   ViewChild
 } from '@angular/core';
+import { PixelGrid } from './classes/pixel-grid';
+import { ISize, ITile } from './interfaces/ngx-pixel-grid';
 
 @Component({
   selector: 'ngx-pixel-grid',
@@ -87,68 +89,5 @@ export class NgxPixelGridComponent implements AfterViewInit {
         }
       });
     });
-  }
-}
-
-// Create a interface for x and y coordinates
-export interface ICoordinates {
-  x: number;
-  y: number;
-}
-// Create a interface for the width and height of a tile
-export interface ISize {
-  width: number;
-  height: number;
-}
-export interface ITile {
-  coordinates: ICoordinates;
-  size: ISize;
-  color: string;
-  onClick: (id: number) => void;
-  onHover: () => void;
-}
-// Create a class for the tiles in the grid
-export class Tile {
-  constructor(
-    public coordinates: ICoordinates,
-    public size: ISize,
-    public color: string,
-    public onClick: (id: number) => void,
-    public onHover: () => void
-  ) { }
-}
-
-// Create a interface for the grid
-export interface IGrid {
-  gutter: number;
-  rows: number;
-  columns: number;
-}
-// Create a class for the grid
-// This class will be used to create the grid and to build the tiles matrix
-// Write this logic to be declarative
-export class PixelGrid {
-  constructor(public rows: number, public columns: number, public gutter: number) { }
-
-  // Create a method to build the tiles matrix
-  buildTilesMatrix(tileSize: ISize, tileColor: string, tileOnClick: (id: number) => void, tileOnHover: () => void): ITile[][] {
-    const tilesMatrix: ITile[][] = [];
-    for (let row = 0; row < this.rows; row++) {
-      tilesMatrix[row] = [];
-      for (let column = 0; column < this.columns; column++) {
-        tilesMatrix[row][column] = {
-          // Add the gutter to the coordinates
-          coordinates: {
-            x: (tileSize.width + this.gutter) * column,
-            y: (tileSize.height + this.gutter) * row
-          },
-          size: tileSize,
-          color: tileColor,
-          onClick: tileOnClick,
-          onHover: tileOnHover
-        };
-      }
-    }
-    return tilesMatrix;
   }
 }
