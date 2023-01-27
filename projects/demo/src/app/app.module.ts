@@ -34,8 +34,8 @@ import { NGX_PIXEL_GRID_OPTIONS } from 'ngx-pixel-grid';
         rows: 100,
         columns: 100,
         tileSize: {
-          width: 10,
-          height: 10
+          width: 9,
+          height: 9
         },
         tileColor: 'rgb(140, 140, 140)',
         tileHoverColor: 'rgb(210, 210, 210)'
