@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+@use './app-theme';
+@use './styles/general';
+
+// Define the light theme.
+$_primary: mat.define-palette(mat.$indigo-palette);
+$_accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$_theme: mat.define-light-theme($_primary, $_accent);
+
+// Include material core styles.
+@include mat.core();
+
+@include mat.all-component-themes($_theme);
+@include app-theme.theme($_theme);
+
+// It's only been a week since IE has die and now this on Edge
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
