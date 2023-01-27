@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   HostListener,
@@ -13,7 +14,8 @@ import {
   <div #pixelGridCanvasContatiner class="pixel-grid-canvas-container">
     <canvas #pixelGridCanvas></canvas>
   </div>`,
-  styles: ['.pixel-grid-canvas-container { width: 100%; height: 100%; }']
+  styles: ['.pixel-grid-canvas-container { width: 100%; height: 100%; }'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NgxPixelGridComponent implements AfterViewInit {
 
