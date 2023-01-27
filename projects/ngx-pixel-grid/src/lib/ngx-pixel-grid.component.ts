@@ -24,11 +24,9 @@ import { NgxPixelGridService } from './ngx-pixel-grid.service';
 })
 export class NgxPixelGridComponent implements AfterViewInit {
 
-  // Create an Output property that emits an event when the user clicks on a tile
-  @Output() tileClick = new EventEmitter<number>();
-
-
   constructor(private ngZone: NgZone, private pixelGridService: NgxPixelGridService) { }
+  
+  @Output() tileClick = new EventEmitter<number>();
 
   @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: ElementRef<HTMLDivElement>;
   @ViewChild('pixelGridCanvas') pixelGridCanvas!: ElementRef<HTMLCanvasElement>;
