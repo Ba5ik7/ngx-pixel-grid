@@ -11,40 +11,6 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="app-background mat-typography">
-  <!-- Create a list of buttons with same class names and uqine IDs -->
-  <!-- When buttons are clicked log it's ID -->
-  <div class="button-container">
-    <button class="button" id="button1">Button 1</button>
-    <button class="button" id="button2">Button 2</button>
-    <button class="button" id="button3">Button 3</button>
-    <button class="button" id="button4">Button 4</button>
-    <button class="button" id="button5">Button 5</button>
-  </div>
   <demo-app></demo-app>
 </body>
-<script>
-  // Get all buttons
-  const buttons = document.querySelectorAll('.button');
-
-  // Loop through buttons and add event listener
-  buttons.forEach((button) => {
-    button.addEventListener('click', (event) => {
-      console.log({ message: 'Im OUTSIDE of the Angular App', id: event.target.id });
-      // change the button background to random color
-      event.target.style.backgroundColor = getRandomColor();
-
-    });
-  });
-
-  // Function to get random color
-  function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-  
-</script>
 </html>
