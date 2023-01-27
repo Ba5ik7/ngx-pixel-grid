@@ -9,8 +9,8 @@ export interface ITile {
   coordinates: ICoordinates;
   size: ISize;
   color: string;
+  hoverColor: string;
   onClick: (id: number) => void;
-  onHover: () => void;
 }
 
 export interface ICoordinates {

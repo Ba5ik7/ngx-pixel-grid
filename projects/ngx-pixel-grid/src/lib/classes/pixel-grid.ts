@@ -3,7 +3,11 @@ import { IPixelGrid, ISize, ITile } from '../interfaces/ngx-pixel-grid';
 export class PixelGrid implements IPixelGrid {
   constructor(public rows: number, public columns: number, public gutter: number) { }
 
-  buildTilesMatrix(tileSize: ISize, tileColor: string, tileOnClick: (id: number) => void, tileOnHover: () => void): ITile[][] {
+  buildTilesMatrix(
+    tileSize: ISize,
+    tileColor: string,
+    tileHoverColor: string,
+    tileOnClick: (id: number) => void): ITile[][] {
     const tilesMatrix: ITile[][] = [];
     for (let row = 0; row < this.rows; row++) {
       tilesMatrix[row] = [];
@@ -16,8 +20,8 @@ export class PixelGrid implements IPixelGrid {
           },
           size: tileSize,
           color: tileColor,
-          onClick: tileOnClick,
-          onHover: tileOnHover
+          hoverColor: tileHoverColor,
+          onClick: tileOnClick
         };
       }
     }

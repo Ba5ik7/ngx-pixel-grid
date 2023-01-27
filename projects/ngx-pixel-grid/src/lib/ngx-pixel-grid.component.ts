@@ -42,14 +42,14 @@ export class NgxPixelGridComponent implements AfterViewInit {
 
     this.pixelGridCanvasContatiner.nativeElement.style.cursor = 'pointer';
     this.pixelGridCanvas.nativeElement.addEventListener('click', this.handleMouseClick);
-    this.pixelGridCanvas.nativeElement.addEventListener('mouseover', this.handleHover);
+    this.pixelGridCanvas.nativeElement.addEventListener('mousemove', this.handleMouseMove);
 
     this.pixelGrid = new PixelGrid(100, 100, 1);
     this.pixelGridTilesMatrix = this.pixelGrid.buildTilesMatrix(
       { width: 10, height: 10 },
       'red',
-      (id: number) => console.log('click', id),
-      () => console.log('hover')
+      'blue',
+      (id: number) => console.log(id)
     );
 
     this.onResize();
@@ -72,28 +72,42 @@ export class NgxPixelGridComponent implements AfterViewInit {
     return { width, height };
   }
 
+  whatTileIsMouseOver(event: MouseEvent): ITile | undefined {
+    const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    let returnTile = undefined;
+    for(let i = 0; i < this.pixelGridTilesMatrix.length; i++) {
+      for(let j = 0; j < this.pixelGridTilesMatrix[i].length; j++) {
+        const tile = this.pixelGridTilesMatrix[i][j];
+        if (x >= tile.coordinates.x && x <= tile.coordinates.x + tile.size.width &&
+          y >= tile.coordinates.y && y <= tile.coordinates.y + tile.size.height) {
+            returnTile = tile;
+          }
+      }
+    }
+    return returnTile;
+  }
+
   handleMouseClick = (event: MouseEvent) => {
     const tile = this.whatTileIsMouseOver(event);
     if (tile) tile.onClick(tile.id);
   }
 
-  handleHover = (event: MouseEvent) => {
-    const tile = this.whatTileIsMouseOver(event);
-    if (tile) tile.onHover();
-  }
 
-  // create a method to return the current tile the mouse is over using the mouse event as a parameter
-  whatTileIsMouseOver(event: MouseEvent): ITile | void {
-    const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    this.pixelGridTilesMatrix.forEach((row) => {
-      row.forEach((tile) => {
-        if (x >= tile.coordinates.x && x <= tile.coordinates.x + tile.size.width &&
-          y >= tile.coordinates.y && y <= tile.coordinates.y + tile.size.height) {
-            return tile
-          }
-        });
-    });
+  currentTileBeingHovered: ITile | undefined;
+  handleMouseMove = (event: MouseEvent) => {
+    const tile = this.whatTileIsMouseOver(event);
+    if (tile) {
+      // If the tile is the same as the one being hovered, do nothing
+      if (this.currentTileBeingHovered && this.currentTileBeingHovered.id === tile.id) return;
+      // If there is a tile being hovered, reset its color
+      if (this.currentTileBeingHovered && this.currentTileBeingHovered.id !== tile.id) {
+        this.currentTileBeingHovered.color = tile.color;
+      }
+      // Set the new tile being hovered
+      this.currentTileBeingHovered = tile;
+      this.currentTileBeingHovered.color = tile.hoverColor;
+    }
   }
 }

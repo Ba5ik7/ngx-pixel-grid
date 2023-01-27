@@ -6,7 +6,9 @@ export class Tile implements ITile {
     public coordinates: ICoordinates,
     public size: ISize,
     public color: string,
+    public hoverColor: string,
     public onClick: (id: number) => void,
-    public onHover: () => void
+    public onHoverIn: () => void,
+    public onHoverOut: () => void
   ) { }
 }
