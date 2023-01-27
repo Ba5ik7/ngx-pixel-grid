@@ -22,7 +22,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
   ctx!: CanvasRenderingContext2D;
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
+  onResize(event: Event | null) {
     this.pixelGridCanvas.nativeElement.width = this.pixelGridCanvasContatiner.nativeElement.clientWidth;
     this.pixelGridCanvas.nativeElement.height = this.pixelGridCanvasContatiner.nativeElement.clientHeight;
   }
@@ -31,5 +31,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d')!;
+    this.onResize(null);
   }
 }
