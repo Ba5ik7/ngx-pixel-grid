@@ -9,7 +9,7 @@ export class PixelGrid implements IPixelGrid {
       tilesMatrix[row] = [];
       for (let column = 0; column < this.columns; column++) {
         tilesMatrix[row][column] = {
-          // Add the gutter to the coordinates
+          id: row * this.columns + column,
           coordinates: {
             x: (tileSize.width + this.gutter) * column,
             y: (tileSize.height + this.gutter) * row

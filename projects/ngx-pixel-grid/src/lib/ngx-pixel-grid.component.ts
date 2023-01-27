@@ -41,9 +41,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
     this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d')!;
 
     this.pixelGridCanvasContatiner.nativeElement.style.cursor = 'pointer';
-    // Add event listeners
     this.pixelGridCanvas.nativeElement.addEventListener('click', this.handleMouseClick);
-    // this.pixelGridCanvas.nativeElement.addEventListener('mouseover', this.onHover);
+    this.pixelGridCanvas.nativeElement.addEventListener('mouseover', this.handleHover);
 
     this.pixelGrid = new PixelGrid(100, 100, 1);
     this.pixelGridTilesMatrix = this.pixelGrid.buildTilesMatrix(
@@ -53,7 +52,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
       () => console.log('hover')
     );
 
-    // Hate void methods
     this.onResize();
     this.ngZone.runOutsideAngular(() => this.loop());
   }
@@ -61,7 +59,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
   loop() {
     this.pixelGridTilesMatrix.forEach(row => {
       row.forEach(tile => {
-        // Draw the tiles
         this.ctx.fillStyle = tile.color;
         this.ctx.fillRect(tile.coordinates.x, tile.coordinates.y, tile.size.width, tile.size.height);
       });
@@ -75,19 +72,28 @@ export class NgxPixelGridComponent implements AfterViewInit {
     return { width, height };
   }
 
-  // Find the mouse click coordinates and check if they are inside a tile
-  // If they are inside a tile, call the tile's onClick method
   handleMouseClick = (event: MouseEvent) => {
+    const tile = this.whatTileIsMouseOver(event);
+    if (tile) tile.onClick(tile.id);
+  }
+
+  handleHover = (event: MouseEvent) => {
+    const tile = this.whatTileIsMouseOver(event);
+    if (tile) tile.onHover();
+  }
+
+  // create a method to return the current tile the mouse is over using the mouse event as a parameter
+  whatTileIsMouseOver(event: MouseEvent): ITile | void {
     const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    this.pixelGridTilesMatrix.forEach((row, columnIndex) => {
-      row.forEach((tile, rowIndex) => {
+    this.pixelGridTilesMatrix.forEach((row) => {
+      row.forEach((tile) => {
         if (x >= tile.coordinates.x && x <= tile.coordinates.x + tile.size.width &&
           y >= tile.coordinates.y && y <= tile.coordinates.y + tile.size.height) {
-          tile.onClick(columnIndex + 1 * rowIndex + 1);
-        }
-      });
+            return tile
+          }
+        });
     });
   }
 }

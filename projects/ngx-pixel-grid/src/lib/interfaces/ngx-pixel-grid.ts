@@ -5,6 +5,7 @@ export interface IPixelGrid {
 }
 
 export interface ITile {
+  id: number;
   coordinates: ICoordinates;
   size: ISize;
   color: string;
