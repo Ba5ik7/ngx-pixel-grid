@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   HostListener,
+  NgZone,
   ViewChild
 } from '@angular/core';
 
@@ -16,6 +17,8 @@ import {
 })
 export class NgxPixelGridComponent implements AfterViewInit {
 
+  constructor(private ngZone: NgZone) { }
+
   @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: ElementRef<HTMLDivElement>;
   @ViewChild('pixelGridCanvas') pixelGridCanvas!: ElementRef<HTMLCanvasElement>;
 
@@ -27,10 +30,15 @@ export class NgxPixelGridComponent implements AfterViewInit {
     this.pixelGridCanvas.nativeElement.height = this.pixelGridCanvasContatiner.nativeElement.clientHeight;
   }
 
-  constructor() { }
-
   ngAfterViewInit(): void {
     this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d')!;
     this.onResize(null);
+
+    this.ngZone.runOutsideAngular(() => this.loop());
+  }
+  
+  loop() {
+
+    requestAnimationFrame(() => this.loop());
   }
 }
