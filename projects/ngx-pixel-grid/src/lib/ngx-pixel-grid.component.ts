@@ -38,8 +38,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
   @HostListener('window:resize')
   onResize() {
     const pixelGridSize = this.getPixelGridSize(this.pixelGridTilesMatrix, this.pixelGrid.gutter);
-    console.log(pixelGridSize);
-    
     this.pixelGridCanvas.nativeElement.width = pixelGridSize.width;
     this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
   }
