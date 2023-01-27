@@ -1,15 +1,15 @@
-// Make a interface for the options of the pixel grid
-// This interface will be used in the constructor of the PixelGrid class
-// add a option for an intro anmation
-// add a option for the gutter
-// add a option for the rows
-// add a option for the columns
+export type RGB = `rgb(${number}, ${number}, ${number})`;
+export type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
+export type HEX = `#${string}`;
 
 export interface IPixelGridOptions {
   introAnimation: boolean;
   gutter: number;
   rows: number;
   columns: number;
+  tileSize: ISize;
+  tileColor: RGB | RGBA | HEX;
+  tileHoverColor: RGB | RGBA | HEX;
 }
 
 export interface IPixelGrid {

@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { NavbarModule } from './components/navbar/navbar.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NGX_PIXEL_GRID_OPTIONS } from 'ngx-pixel-grid';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,23 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     NavbarModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: NGX_PIXEL_GRID_OPTIONS,
+      useValue: {
+        introAnimation: true,
+        gutter: 1,
+        rows: 100,
+        columns: 100,
+        tileSize: {
+          width: 10,
+          height: 10
+        },
+        tileColor: 'rgb(140, 140, 140)',
+        tileHoverColor: 'rgb(210, 210, 210)'
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

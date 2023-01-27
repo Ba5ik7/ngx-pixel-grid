@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { PixelGrid } from './classes/pixel-grid';
 import { ISize, ITile } from './interfaces/ngx-pixel-grid';
+import { NgxPixelGridService } from './ngx-pixel-grid.service';
 
 @Component({
   selector: 'ngx-pixel-grid',
@@ -27,7 +28,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
   @Output() tileClick = new EventEmitter<number>();
 
 
-  constructor(private ngZone: NgZone) { }
+  constructor(private ngZone: NgZone, private pixelGridService: NgxPixelGridService) { }
 
   @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: ElementRef<HTMLDivElement>;
   @ViewChild('pixelGridCanvas') pixelGridCanvas!: ElementRef<HTMLCanvasElement>;
@@ -50,11 +51,15 @@ export class NgxPixelGridComponent implements AfterViewInit {
     this.pixelGridCanvas.nativeElement.addEventListener('click', this.handleMouseClick);
     this.pixelGridCanvas.nativeElement.addEventListener('mousemove', this.handleMouseMove);
 
-    this.pixelGrid = new PixelGrid(100, 100, 1);
+    this.pixelGrid = new PixelGrid(
+      this.pixelGridService.columns,
+      this.pixelGridService.rows,
+      this.pixelGridService.gutter
+    );
     this.pixelGridTilesMatrix = this.pixelGrid.buildTilesMatrix(
-      { width: 10, height: 10 },
-      'red',
-      'blue'
+      this.pixelGridService.tileSize,
+      this.pixelGridService.tileColor,
+      this.pixelGridService.tileHoverColor
     );
 
     this.onResize();
