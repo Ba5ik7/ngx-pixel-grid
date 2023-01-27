@@ -3,8 +3,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   NgZone,
+  Output,
   ViewChild
 } from '@angular/core';
 import { PixelGrid } from './classes/pixel-grid';
@@ -20,6 +22,10 @@ import { ISize, ITile } from './interfaces/ngx-pixel-grid';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NgxPixelGridComponent implements AfterViewInit {
+
+  // Create an Output property that emits an event when the user clicks on a tile
+  @Output() tileClick = new EventEmitter<number>();
+
 
   constructor(private ngZone: NgZone) { }
 
@@ -48,8 +54,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
     this.pixelGridTilesMatrix = this.pixelGrid.buildTilesMatrix(
       { width: 10, height: 10 },
       'red',
-      'blue',
-      (id: number) => console.log(id)
+      'blue'
     );
 
     this.onResize();
@@ -91,9 +96,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
 
   handleMouseClick = (event: MouseEvent) => {
     const tile = this.whatTileIsMouseOver(event);
-    if (tile) tile.onClick(tile.id);
+    if (tile) this.tileClick.emit(tile.id);
   }
-
 
   currentTileBeingHovered: ITile | undefined;
   handleMouseMove = (event: MouseEvent) => {

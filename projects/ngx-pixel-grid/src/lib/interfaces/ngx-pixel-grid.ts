@@ -10,7 +10,6 @@ export interface ITile {
   size: ISize;
   color: string;
   hoverColor: string;
-  onClick: (id: number) => void;
 }
 
 export interface ICoordinates {

@@ -7,7 +7,7 @@ export class PixelGrid implements IPixelGrid {
     tileSize: ISize,
     tileColor: string,
     tileHoverColor: string,
-    tileOnClick: (id: number) => void): ITile[][] {
+  ): ITile[][] {
     const tilesMatrix: ITile[][] = [];
     for (let row = 0; row < this.rows; row++) {
       tilesMatrix[row] = [];
@@ -20,8 +20,7 @@ export class PixelGrid implements IPixelGrid {
           },
           size: tileSize,
           color: tileColor,
-          hoverColor: tileHoverColor,
-          onClick: tileOnClick
+          hoverColor: tileHoverColor
         };
       }
     }
