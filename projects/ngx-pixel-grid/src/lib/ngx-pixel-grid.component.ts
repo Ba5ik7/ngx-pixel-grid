@@ -1,6 +1,8 @@
 import {
   AfterViewInit,
   Component,
+  ElementRef,
+  HostListener,
   ViewChild
 } from '@angular/core';
 
@@ -14,12 +16,20 @@ import {
 })
 export class NgxPixelGridComponent implements AfterViewInit {
 
-  @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: HTMLDivElement;
-  @ViewChild('pixelGridCanvas') pixelGridCanvas!: HTMLCanvasElement;
+  @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: ElementRef<HTMLDivElement>;
+  @ViewChild('pixelGridCanvas') pixelGridCanvas!: ElementRef<HTMLCanvasElement>;
+
+  ctx!: CanvasRenderingContext2D;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.pixelGridCanvas.nativeElement.width = this.pixelGridCanvasContatiner.nativeElement.clientWidth;
+    this.pixelGridCanvas.nativeElement.height = this.pixelGridCanvasContatiner.nativeElement.clientHeight;
+  }
 
   constructor() { }
 
   ngAfterViewInit(): void {
-
+    this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d')!;
   }
 }
