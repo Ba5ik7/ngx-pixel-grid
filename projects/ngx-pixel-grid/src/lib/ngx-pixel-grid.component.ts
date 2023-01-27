@@ -28,15 +28,17 @@ export class NgxPixelGridComponent implements AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event | null) {
-    this.pixelGridCanvas.nativeElement.width = this.pixelGridCanvasContatiner.nativeElement.clientWidth;
-    this.pixelGridCanvas.nativeElement.height = this.pixelGridCanvasContatiner.nativeElement.clientHeight;
+    const pixelGridSize = this.getPixelGridSize(this.pixelGridTilesMatrix, this.pixelGrid.gutter);
+    console.log(pixelGridSize);
+    
+    this.pixelGridCanvas.nativeElement.width = pixelGridSize.width
+    this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
   }
 
   ngAfterViewInit(): void {
     this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d')!;
-    this.onResize(null);
 
-    this.pixelGrid = new PixelGrid(100, 100, 5);
+    this.pixelGrid = new PixelGrid(100, 100, 1);
     this.pixelGridTilesMatrix = this.pixelGrid.buildTilesMatrix(
       { width: 10, height: 10 },
       'red',
@@ -44,6 +46,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
       () => console.log('hover')
     );
 
+    // Hate void methods
+    this.onResize(null);
     this.ngZone.runOutsideAngular(() => this.loop());
   }
   
@@ -55,6 +59,12 @@ export class NgxPixelGridComponent implements AfterViewInit {
       });
     });
     requestAnimationFrame(() => this.loop());
+  }
+
+  getPixelGridSize(pixelGridTilesMatrix: ITile[][], gutter: number): ISize {
+    const width = pixelGridTilesMatrix[0].length * pixelGridTilesMatrix[0][0].size.width + (pixelGridTilesMatrix[0].length - 1) * gutter;
+    const height = pixelGridTilesMatrix.length * pixelGridTilesMatrix[0][0].size.height + (pixelGridTilesMatrix.length - 1) * gutter;
+    return { width, height };
   }
 }
 
