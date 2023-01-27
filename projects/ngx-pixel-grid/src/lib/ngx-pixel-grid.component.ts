@@ -28,8 +28,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
   pixelGrid!: PixelGrid;
   pixelGridTilesMatrix!: ITile[][];
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event | null) {
+  @HostListener('window:resize')
+  onResize() {
     const pixelGridSize = this.getPixelGridSize(this.pixelGridTilesMatrix, this.pixelGrid.gutter);
     this.pixelGridCanvas.nativeElement.width = pixelGridSize.width
     this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
@@ -52,7 +52,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
     );
 
     // Hate void methods
-    this.onResize(null);
+    this.onResize();
     this.ngZone.runOutsideAngular(() => this.loop());
   }
   
