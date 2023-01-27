@@ -7,7 +7,8 @@
 .header-background::before {
   content: '';
   position: absolute;
-  background-size: 400px;
+  background-image: url('../../../assets/img/grid_on.svg');
+  background-size: 500px;
   top: 0;
   bottom: 0;
   left: 0;
@@ -54,8 +55,15 @@
 .home-main {
   padding: 16px;
   width: 75%;
-  max-width: 1080px;
+  max-width: 900px;
   margin: auto;
 
+  .mat-card {
+    padding: 40px;
+  }
 
+  // ngx-editorjs {
+  //   display: block;
+  //   margin-top: 40px;
+  // }
 }
