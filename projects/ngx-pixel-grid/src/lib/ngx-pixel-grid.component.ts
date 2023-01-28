@@ -129,6 +129,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
   }
 
   currentTileBeingHovered: ITile | undefined;
+  tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
   handleMouseMove = (event: MouseEvent) => {
     const tile = this.whatTileIsMouseOver(event);
     if (tile) {
@@ -139,9 +140,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
         this.currentTileBeingHovered.color = tile.color;
       }
       // If there is a tooltip being shown, destroy it
-      if (this.tooltipRef) {
-        this.tooltipRef.dispose();
-      }
+      if (this.tooltipRef) this.tooltipRef.detach();
+      
       // Set the new tile being hovered
       this.currentTileBeingHovered = tile;
       this.currentTileBeingHovered.color = tile.hoverColor;
@@ -156,8 +156,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
       });
 
       // Create the tooltip component
-      const tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
-      const tooltipComponent = this.tooltipRef.attach(tooltipPortal);
+      const tooltipComponent = this.tooltipRef.attach(this.tooltipPortal);
       tooltipComponent.instance.text = tile.tooltipText ?? tile.id.toString();
     }
   }
