@@ -57,6 +57,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
     this.pixelGridCanvasContatiner.nativeElement.style.cursor = 'pointer';
     this.pixelGridCanvas.nativeElement.addEventListener('click', this.handleMouseClick);
     this.pixelGridCanvas.nativeElement.addEventListener('mousemove', this.handleMouseMove);
+    this.pixelGridCanvas.nativeElement.addEventListener('mouseout', this.handleMouseOut);
 
     this.pixelGrid = new PixelGrid(
       this.pixelGridService.columns,
@@ -143,6 +144,12 @@ export class NgxPixelGridComponent implements AfterViewInit {
       const tooltipComponent = this.tooltipRef.attach(tooltipPortal);
       tooltipComponent.instance.text = tile.id.toString();
     }
+  }
+
+  handleMouseOut = () => {
+    // Clean up
+    if (this.currentTileBeingHovered) this.currentTileBeingHovered.color = this.pixelGridService.tileColor;
+    if (this.tooltipRef) this.tooltipRef.dispose();
   }
 }
 
