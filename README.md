@@ -1,8 +1,10 @@
 # Ngx-Pixel-Grid
-
+Demo: [Here](https://ba5ik7.github.io/ngx-pixel-grid/)
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.1.
 
 ## Development Setup
+
+Run `npm i`
 
 Run `npm run start:ngx-pixel-grid` to build the `ngx-pixel-module`. The application will automatically rebuild if you change any of the source files.
 
