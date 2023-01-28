@@ -83,6 +83,10 @@ export class NgxPixelGridComponent implements AfterViewInit {
   }
   
   loop() {
+    
+    this.ctx.save();
+    this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
+
     this.pixelGridTilesMatrix.forEach(row => {
       row.forEach(tile => {
         // If the tile is a pixel, then paint base64 image to the ctx
@@ -97,6 +101,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
         }
       });
     });
+
+    this.ctx.restore();
     requestAnimationFrame(() => this.loop());
   }
 
