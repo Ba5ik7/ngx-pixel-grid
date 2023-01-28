@@ -7,7 +7,7 @@ import { HomeService } from './home.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
   constructor(private homeService: HomeService) { }
 
@@ -22,13 +22,11 @@ export class HomeComponent implements OnInit {
     })
   );
 
-
-  ngOnInit(): void {
-  }
-
-
   loadPixels() {
     this.homeService.loadPixels();
   }
 
+  tileClick(tileId: string) {
+    console.log(tileId);
+  }
 }

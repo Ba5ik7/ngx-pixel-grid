@@ -11,6 +11,6 @@
 </header>
 <main class="home-main">
   <mat-card>
-    <ngx-pixel-grid [pixels]="pixels$ | async" ></ngx-pixel-grid>
+    <ngx-pixel-grid [pixels]="pixels$ | async" (tileClick)="tileClick($event)"></ngx-pixel-grid>
   </mat-card>
 </main>
