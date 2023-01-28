@@ -6,7 +6,8 @@
     "build:ngx-pixel-grid": "ng build ngx-pixel-grid --configuration production",
     "publish:ngx-pixel-grid": "cd dist/ngx-pixel-grid && npm publish",
     "start:demo": "ng serve demo --open",
-    "start:ngx-pixel-grid": "ng build ngx-pixel-grid --watch --configuration development"
+    "start:ngx-pixel-grid": "ng build ngx-pixel-grid --watch --configuration development",
+    "deploy-demo": "git push origin :gh-pages && git subtree push --prefix dist/demo origin gh-pages"
   },
   "private": true,
   "dependencies": {
