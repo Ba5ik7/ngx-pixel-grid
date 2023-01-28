@@ -85,8 +85,16 @@ export class NgxPixelGridComponent implements AfterViewInit {
   loop() {
     this.pixelGridTilesMatrix.forEach(row => {
       row.forEach(tile => {
-        this.ctx.fillStyle = tile.color;
-        this.ctx.fillRect(tile.coordinates.x, tile.coordinates.y, tile.size.width, tile.size.height);
+        // If the tile is a pixel, then paint base64 image to the ctx
+        if (tile.isPixel) {
+          const img = new Image();
+          img.src = tile.img!;
+          this.ctx.drawImage(img, tile.coordinates.x, tile.coordinates.y, tile.size.width + 1, tile.size.height + 1);
+          return;
+        } else {
+          this.ctx.fillStyle = tile.color;
+          this.ctx.fillRect(tile.coordinates.x, tile.coordinates.y, tile.size.width, tile.size.height);
+        }
       });
     });
     requestAnimationFrame(() => this.loop());

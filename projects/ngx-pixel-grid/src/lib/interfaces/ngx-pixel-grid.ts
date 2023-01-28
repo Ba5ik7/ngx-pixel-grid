@@ -20,6 +20,7 @@ export interface IPixelGrid {
 
 export interface ITile {
   id: string;
+  isPixel: boolean;
   coordinates: ICoordinates;
   size: ISize;
   color: string;

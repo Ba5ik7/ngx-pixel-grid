@@ -32,10 +32,13 @@ export class NgxPixelGridService implements IPixelGridOptions {
       const tileCoordinates = tile.coordinates;
       const tileRow = Math.floor(tileCoordinates.y / (this.tileSize.height + this.gutter));
       const tileColumn = Math.floor(tileCoordinates.x / (this.tileSize.width + this.gutter));
+      
+      tilesMatrix[tileRow][tileColumn].isPixel = true;
       tilesMatrix[tileRow][tileColumn].img = tile.img;
       tilesMatrix[tileRow][tileColumn].color = 'rbg(0, 0, 0)';
       tilesMatrix[tileRow][tileColumn].href = tile.href;
       tilesMatrix[tileRow][tileColumn].tooltipText = tile.tooltipText;
+      console.log(tilesMatrix[tileRow][tileColumn]);
     });
     return tilesMatrix;
   }

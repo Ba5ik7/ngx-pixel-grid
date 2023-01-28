@@ -14,6 +14,7 @@ export class PixelGrid implements IPixelGrid {
       for (let column = 0; column < this.columns; column++) {
         tilesMatrix[row][column] = {
           id: (row * this.columns + column).toString(),
+          isPixel: false,
           coordinates: {
             x: (tileSize.width + this.gutter) * column,
             y: (tileSize.height + this.gutter) * row
