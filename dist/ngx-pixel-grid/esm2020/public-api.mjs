@@ -1,0 +1,8 @@
+/*
+ * Public API Surface of ngx-pixel-grid
+ */
+export * from './lib/ngx-pixel-grid.service';
+export * from './lib/ngx-pixel-grid.component';
+export * from './lib/ngx-pixel-grid.module';
+export * from './lib/interfaces/ngx-pixel-grid';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3Byb2plY3RzL25neC1waXhlbC1ncmlkL3NyYy9wdWJsaWMtYXBpLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOztHQUVHO0FBRUgsY0FBYyw4QkFBOEIsQ0FBQztBQUM3QyxjQUFjLGdDQUFnQyxDQUFDO0FBQy9DLGNBQWMsNkJBQTZCLENBQUM7QUFDNUMsY0FBYyxpQ0FBaUMsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIi8qXG4gKiBQdWJsaWMgQVBJIFN1cmZhY2Ugb2Ygbmd4LXBpeGVsLWdyaWRcbiAqL1xuXG5leHBvcnQgKiBmcm9tICcuL2xpYi9uZ3gtcGl4ZWwtZ3JpZC5zZXJ2aWNlJztcbmV4cG9ydCAqIGZyb20gJy4vbGliL25neC1waXhlbC1ncmlkLmNvbXBvbmVudCc7XG5leHBvcnQgKiBmcm9tICcuL2xpYi9uZ3gtcGl4ZWwtZ3JpZC5tb2R1bGUnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvaW50ZXJmYWNlcy9uZ3gtcGl4ZWwtZ3JpZCc7XG4iXX0=

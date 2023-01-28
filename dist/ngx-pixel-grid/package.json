@@ -1,0 +1,34 @@
+{
+  "name": "@tmdjr/ngx-pixel-grid",
+  "version": "0.0.0-watch+1674891798768",
+  "peerDependencies": {
+    "@angular/common": "^14.2.0",
+    "@angular/core": "^14.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "module": "fesm2015/tmdjr-ngx-pixel-grid.mjs",
+  "es2020": "fesm2020/tmdjr-ngx-pixel-grid.mjs",
+  "esm2020": "esm2020/tmdjr-ngx-pixel-grid.mjs",
+  "fesm2020": "fesm2020/tmdjr-ngx-pixel-grid.mjs",
+  "fesm2015": "fesm2015/tmdjr-ngx-pixel-grid.mjs",
+  "typings": "index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2020": "./esm2020/tmdjr-ngx-pixel-grid.mjs",
+      "es2020": "./fesm2020/tmdjr-ngx-pixel-grid.mjs",
+      "es2015": "./fesm2015/tmdjr-ngx-pixel-grid.mjs",
+      "node": "./fesm2015/tmdjr-ngx-pixel-grid.mjs",
+      "default": "./fesm2020/tmdjr-ngx-pixel-grid.mjs"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy in full compilation mode. This is not allowed.\\nPlease delete and rebuild the package with Ivy partial compilation mode, before attempting to publish.\\n')\" && exit 1"
+  }
+}
