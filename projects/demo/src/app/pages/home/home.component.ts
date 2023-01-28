@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
     map((result) => {
       result.listPixelBlocks.items.forEach((item: any) => {
         item.coordinates = { x: item.i, y: item.j };
+        item.tooltipText = item.hoverDisplay
       });
       return result.listPixelBlocks.items;
     })

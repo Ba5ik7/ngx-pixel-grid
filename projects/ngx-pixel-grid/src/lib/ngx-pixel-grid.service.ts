@@ -38,7 +38,6 @@ export class NgxPixelGridService implements IPixelGridOptions {
       tilesMatrix[tileRow][tileColumn].color = 'rbg(0, 0, 0)';
       tilesMatrix[tileRow][tileColumn].href = tile.href;
       tilesMatrix[tileRow][tileColumn].tooltipText = tile.tooltipText;
-      console.log(tilesMatrix[tileRow][tileColumn]);
     });
     return tilesMatrix;
   }
