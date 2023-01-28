@@ -19,12 +19,14 @@ export interface IPixelGrid {
 }
 
 export interface ITile {
-  id: number;
+  id: string;
   coordinates: ICoordinates;
   size: ISize;
   color: string;
   hoverColor: string;
   tooltipText?: string;
+  img?: string;
+  href?: string;
 }
 
 export interface ICoordinates {

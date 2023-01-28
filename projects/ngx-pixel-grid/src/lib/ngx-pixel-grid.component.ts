@@ -33,7 +33,14 @@ export class NgxPixelGridComponent implements AfterViewInit {
     private tooltipOverlay: Overlay
   ) { }
   
-  @Output() tileClick = new EventEmitter<number>();
+  @Output() tileClick = new EventEmitter<string>();
+
+  @Input() set bitmapItems(tiles: ITile[]) {
+    this.pixelGridTilesMatrix = this.pixelGridService.mergeTilesMatrix(
+      this.pixelGridTilesMatrix,
+      tiles
+    );
+  }
 
   @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: ElementRef<HTMLDivElement>;
   @ViewChild('pixelGridCanvas') pixelGridCanvas!: ElementRef<HTMLCanvasElement>;

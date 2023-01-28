@@ -13,7 +13,7 @@ export class PixelGrid implements IPixelGrid {
       tilesMatrix[row] = [];
       for (let column = 0; column < this.columns; column++) {
         tilesMatrix[row][column] = {
-          id: row * this.columns + column,
+          id: (row * this.columns + column).toString(),
           coordinates: {
             x: (tileSize.width + this.gutter) * column,
             y: (tileSize.height + this.gutter) * row
@@ -22,7 +22,7 @@ export class PixelGrid implements IPixelGrid {
           color: tileColor,
           hoverColor: tileHoverColor,
           tooltipText: `Tile ${row * this.columns + column}`
-        };
+        };        
       }
     }
     return tilesMatrix;
