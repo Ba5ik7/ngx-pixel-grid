@@ -24,6 +24,7 @@ export interface ITile {
   size: ISize;
   color: string;
   hoverColor: string;
+  tooltipText?: string;
 }
 
 export interface ICoordinates {

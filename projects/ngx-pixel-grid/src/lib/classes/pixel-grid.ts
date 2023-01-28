@@ -20,7 +20,8 @@ export class PixelGrid implements IPixelGrid {
           },
           size: tileSize,
           color: tileColor,
-          hoverColor: tileHoverColor
+          hoverColor: tileHoverColor,
+          tooltipText: `Tile ${row * this.columns + column}`
         };
       }
     }

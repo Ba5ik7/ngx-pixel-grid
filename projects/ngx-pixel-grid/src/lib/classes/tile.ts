@@ -7,8 +7,6 @@ export class Tile implements ITile {
     public size: ISize,
     public color: string,
     public hoverColor: string,
-    public onClick: (id: number) => void,
-    public onHoverIn: () => void,
-    public onHoverOut: () => void
+    public tooltipText: string,
   ) { }
 }
