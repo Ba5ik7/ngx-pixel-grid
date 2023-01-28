@@ -2,11 +2,11 @@
   "name": "ngx-pixel-grid",
   "version": "0.0.1",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve demo",
-    "build": "ng build ngx-pixel-grid --configuration production",
-    "watch": "ng build ngx-pixel-grid --watch --configuration development",
-    "test": "ng test"
+    "build:demo": "ng build demo --configuration production",
+    "build:ngx-pixel-grid": "ng build ngx-pixel-grid --configuration production",
+    "publish:ngx-pixel-grid": "cd dist/ngx-pixel-grid && npm publish",
+    "start:demo": "ng serve demo --open",
+    "start:ngx-pixel-grid": "ng build ngx-pixel-grid --watch --configuration development"
   },
   "private": true,
   "dependencies": {
