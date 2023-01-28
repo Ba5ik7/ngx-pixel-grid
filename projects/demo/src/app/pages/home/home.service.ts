@@ -14,8 +14,9 @@ export class HomeService {
   private pixels = new Subject<any>();
   public pixels$ = this.pixels.asObservable();
 
-  loadPixels(index: number) {
-    if (index >= dummyDataLoads.length) return;
-    this.pixels.next(dummyDataLoads[index]);
+  loadPixels() {
+    dummyDataLoads.forEach((data, index) => {
+      setTimeout(() => this.pixels.next(data), 1000 * index);
+    });
   }
 }

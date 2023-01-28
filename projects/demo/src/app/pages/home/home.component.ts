@@ -26,10 +26,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  dummyDataLoadIndex = 0;
+
   loadPixels() {
-    this.homeService.loadPixels(this.dummyDataLoadIndex);
-    this.dummyDataLoadIndex++;
+    this.homeService.loadPixels();
   }
 
 }
