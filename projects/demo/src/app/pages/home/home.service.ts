@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeService {
 
-  constructor() { }
+  private pixels = new Subject<any>();
+  public pixels$ = this.pixels.asObservable();
+
+  loadPixels() {
+    this.pixels.next(data);
+  }
 }
 
 

@@ -1,4 +1,7 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
+import { ITile } from 'dist/ngx-pixel-grid/lib/interfaces/ngx-pixel-grid';
+import { map } from 'rxjs';
+import { HomeService } from './home.service';
 
 @Component({
   selector: 'app-home',
@@ -6,11 +9,25 @@ import { Component, HostBinding, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  @HostBinding('class.main-content') readonly mainContentClass = true;
-  
-  constructor() { }
+
+  constructor(private homeService: HomeService) { }
+
+  pixels$ = this.homeService.pixels$
+  .pipe(
+    map((result) => {
+      result.listPixelBlocks.items.forEach((item: any) => {
+        item.coordinates = { x: item.i, y: item.j };
+      });
+      return result.listPixelBlocks.items;
+    })
+  );
+
 
   ngOnInit(): void {
+  }
+
+  loadPixels() {
+    this.homeService.loadPixels();
   }
 
 }

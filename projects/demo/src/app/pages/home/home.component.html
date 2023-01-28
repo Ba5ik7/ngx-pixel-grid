@@ -5,12 +5,12 @@
       <h2>A Customizable Themeable Angular Material Component</h2>
     </div>
     <div class="header-start">
-      <a mat-raised-button>Test</a>
+      <a mat-raised-button (click)="loadPixels()">Load Pixels</a>
     </div>
   </div>
 </header>
 <main class="home-main">
   <mat-card>
-    <ngx-pixel-grid></ngx-pixel-grid>
+    <ngx-pixel-grid [pixels]="pixels$ | async" ></ngx-pixel-grid>
   </mat-card>
 </main>

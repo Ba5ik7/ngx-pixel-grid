@@ -35,7 +35,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
   
   @Output() tileClick = new EventEmitter<string>();
 
-  @Input() set bitmapItems(tiles: ITile[]) {
+  @Input() set pixels(tiles: ITile[]) {
+    if (!tiles || !tiles.length) return;
     this.pixelGridTilesMatrix = this.pixelGridService.mergeTilesMatrix(
       this.pixelGridTilesMatrix,
       tiles
