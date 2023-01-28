@@ -13,7 +13,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { PixelGrid } from './classes/pixel-grid';
-import { ISize, ITile } from './interfaces/ngx-pixel-grid';
+import { ISize, ITile, ITileClickEvent } from './interfaces/ngx-pixel-grid';
 import { NgxPixelGridService } from './ngx-pixel-grid.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
     private tooltipOverlay: Overlay
   ) { }
   
-  @Output() tileClick = new EventEmitter<string>();
+  @Output() tileClick = new EventEmitter<ITileClickEvent>();
 
   @Input() set pixels(tiles: ITile[]) {
     if (!tiles || !tiles.length) return;
@@ -125,7 +125,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
 
   handleMouseClick = (event: MouseEvent) => {
     const tile = this.whatTileIsMouseOver(event);
-    if (tile) this.tileClick.emit(tile.id);
+    if (tile) this.tileClick.emit({ id: tile.id, href: tile.href ?? undefined });
   }
 
   currentTileBeingHovered: ITile | undefined;

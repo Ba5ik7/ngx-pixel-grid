@@ -39,3 +39,8 @@ export interface ISize {
   width: number;
   height: number;
 }
+
+export interface ITileClickEvent {
+  id: string;
+  href?: string;
+}
