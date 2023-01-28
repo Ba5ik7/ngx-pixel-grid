@@ -158,7 +158,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
       // Create the tooltip component
       const tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
       const tooltipComponent = this.tooltipRef.attach(tooltipPortal);
-      tooltipComponent.instance.text = tile.id.toString();
+      tooltipComponent.instance.text = tile.tooltipText ?? tile.id.toString();
     }
   }
 
