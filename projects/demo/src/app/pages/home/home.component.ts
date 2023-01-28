@@ -1,5 +1,4 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
-import { ITile } from 'dist/ngx-pixel-grid/lib/interfaces/ngx-pixel-grid';
 import { map } from 'rxjs';
 import { HomeService } from './home.service';
 
