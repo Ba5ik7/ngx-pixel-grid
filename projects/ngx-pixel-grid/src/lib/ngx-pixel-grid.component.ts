@@ -1,3 +1,5 @@
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -5,6 +7,7 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
+  Input,
   NgZone,
   Output,
   ViewChild
@@ -24,7 +27,11 @@ import { NgxPixelGridService } from './ngx-pixel-grid.service';
 })
 export class NgxPixelGridComponent implements AfterViewInit {
 
-  constructor(private ngZone: NgZone, private pixelGridService: NgxPixelGridService) { }
+  constructor(
+    private ngZone: NgZone,
+    private pixelGridService: NgxPixelGridService,
+    private tooltipOverlay: Overlay
+  ) { }
   
   @Output() tileClick = new EventEmitter<number>();
 
@@ -34,6 +41,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
   ctx!: CanvasRenderingContext2D;
   pixelGrid!: PixelGrid;
   pixelGridTilesMatrix!: ITile[][];
+
+  tooltipRef!: OverlayRef;
 
   @HostListener('window:resize')
   onResize() {
@@ -112,9 +121,45 @@ export class NgxPixelGridComponent implements AfterViewInit {
       if (this.currentTileBeingHovered && this.currentTileBeingHovered.id !== tile.id) {
         this.currentTileBeingHovered.color = tile.color;
       }
+      // If there is a tooltip being shown, destroy it
+      if (this.tooltipRef) {
+        this.tooltipRef.dispose();
+      }
       // Set the new tile being hovered
       this.currentTileBeingHovered = tile;
       this.currentTileBeingHovered.color = tile.hoverColor;
+
+      // Create the tooltip strategy
+      const positionStrategy = this.tooltipOverlay.position().global();
+      positionStrategy.top(`${event.clientY + 15}px`).left(`${event.clientX + 15}px`);
+      this.tooltipRef = this.tooltipOverlay.create({
+        positionStrategy,
+        hasBackdrop: false,
+        scrollStrategy: this.tooltipOverlay.scrollStrategies.reposition()
+      });
+
+      // Create the tooltip component
+      const tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
+      const tooltipComponent = this.tooltipRef.attach(tooltipPortal);
+      tooltipComponent.instance.text = tile.id.toString();
     }
   }
+}
+
+
+@Component({
+  selector: 'ngx-pixel-grid-tooltip',
+  template: `<div class="tooltip"><div class="tooltip-content">{{text}}</div></div>`,
+  styles: [`
+    :host, .tooltip { pointer-events: none; }
+    .tooltip { 
+      background-color: #000;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+     }
+  `],
+})
+export class NgxPixelGridTooltipComponent {
+  @Input() text!: string;
 }
