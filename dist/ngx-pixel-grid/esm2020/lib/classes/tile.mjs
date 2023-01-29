@@ -1,0 +1,12 @@
+export class Tile {
+    constructor(id, isPixel, coordinates, size, color, hoverColor, tooltipText) {
+        this.id = id;
+        this.isPixel = isPixel;
+        this.coordinates = coordinates;
+        this.size = size;
+        this.color = color;
+        this.hoverColor = hoverColor;
+        this.tooltipText = tooltipText;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGlsZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL25neC1waXhlbC1ncmlkL3NyYy9saWIvY2xhc3Nlcy90aWxlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBLE1BQU0sT0FBTyxJQUFJO0lBQ2YsWUFDUyxFQUFVLEVBQ1YsT0FBZ0IsRUFDaEIsV0FBeUIsRUFDekIsSUFBVyxFQUNYLEtBQWEsRUFDYixVQUFrQixFQUNsQixXQUFtQjtRQU5uQixPQUFFLEdBQUYsRUFBRSxDQUFRO1FBQ1YsWUFBTyxHQUFQLE9BQU8sQ0FBUztRQUNoQixnQkFBVyxHQUFYLFdBQVcsQ0FBYztRQUN6QixTQUFJLEdBQUosSUFBSSxDQUFPO1FBQ1gsVUFBSyxHQUFMLEtBQUssQ0FBUTtRQUNiLGVBQVUsR0FBVixVQUFVLENBQVE7UUFDbEIsZ0JBQVcsR0FBWCxXQUFXLENBQVE7SUFDeEIsQ0FBQztDQUNOIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgSUNvb3JkaW5hdGVzLCBJU2l6ZSwgSVRpbGUgfSBmcm9tICcuLi9pbnRlcmZhY2VzL25neC1waXhlbC1ncmlkJztcblxuZXhwb3J0IGNsYXNzIFRpbGUgaW1wbGVtZW50cyBJVGlsZSB7XG4gIGNvbnN0cnVjdG9yKFxuICAgIHB1YmxpYyBpZDogc3RyaW5nLFxuICAgIHB1YmxpYyBpc1BpeGVsOiBib29sZWFuLFxuICAgIHB1YmxpYyBjb29yZGluYXRlczogSUNvb3JkaW5hdGVzLFxuICAgIHB1YmxpYyBzaXplOiBJU2l6ZSxcbiAgICBwdWJsaWMgY29sb3I6IHN0cmluZyxcbiAgICBwdWJsaWMgaG92ZXJDb2xvcjogc3RyaW5nLFxuICAgIHB1YmxpYyB0b29sdGlwVGV4dDogc3RyaW5nLFxuICApIHsgfVxufSJdfQ==

@@ -3,6 +3,18 @@ import { InjectionToken, Injectable, Optional, Inject, EventEmitter, Component, 
 import { ComponentPortal } from '@angular/cdk/portal';
 import * as i2 from '@angular/cdk/overlay';
 
+class Tile {
+    constructor(id, isPixel, coordinates, size, color, hoverColor, tooltipText) {
+        this.id = id;
+        this.isPixel = isPixel;
+        this.coordinates = coordinates;
+        this.size = size;
+        this.color = color;
+        this.hoverColor = hoverColor;
+        this.tooltipText = tooltipText;
+    }
+}
+
 class PixelGrid {
     constructor(rows, columns, gutter) {
         this.rows = rows;
@@ -14,18 +26,10 @@ class PixelGrid {
         for (let row = 0; row < this.rows; row++) {
             tilesMatrix[row] = [];
             for (let column = 0; column < this.columns; column++) {
-                tilesMatrix[row][column] = {
-                    id: (row * this.columns + column).toString(),
-                    isPixel: false,
-                    coordinates: {
-                        x: (tileSize.width + this.gutter) * column,
-                        y: (tileSize.height + this.gutter) * row
-                    },
-                    size: tileSize,
-                    color: tileColor,
-                    hoverColor: tileHoverColor,
-                    tooltipText: `Tile ${row * this.columns + column}`
-                };
+                tilesMatrix[row][column] = new Tile((row * this.columns + column).toString(), false, {
+                    x: (tileSize.width + this.gutter) * column,
+                    y: (tileSize.height + this.gutter) * row
+                }, tileSize, tileColor, tileHoverColor, `Tile ${row * this.columns + column}`);
             }
         }
         return tilesMatrix;

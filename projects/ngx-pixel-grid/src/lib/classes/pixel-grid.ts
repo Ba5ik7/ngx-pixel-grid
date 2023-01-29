@@ -1,4 +1,5 @@
 import { IPixelGrid, ISize, ITile } from '../interfaces/ngx-pixel-grid';
+import { Tile } from './tile';
 
 export class PixelGrid implements IPixelGrid {
   constructor(public rows: number, public columns: number, public gutter: number) { }
@@ -12,18 +13,18 @@ export class PixelGrid implements IPixelGrid {
     for (let row = 0; row < this.rows; row++) {
       tilesMatrix[row] = [];
       for (let column = 0; column < this.columns; column++) {
-        tilesMatrix[row][column] = {
-          id: (row * this.columns + column).toString(),
-          isPixel: false,
-          coordinates: {
+        tilesMatrix[row][column] = new Tile(
+          (row * this.columns + column).toString(),
+          false,
+          {
             x: (tileSize.width + this.gutter) * column,
             y: (tileSize.height + this.gutter) * row
           },
-          size: tileSize,
-          color: tileColor,
-          hoverColor: tileHoverColor,
-          tooltipText: `Tile ${row * this.columns + column}`
-        };        
+          tileSize,
+          tileColor,
+          tileHoverColor,
+          `Tile ${row * this.columns + column}`
+        );        
       }
     }
     return tilesMatrix;
