@@ -149,8 +149,7 @@ class NgxPixelGridComponent {
             var _a;
             const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
             const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
-            if (tile)
-                this.tileClick.emit({ id: tile.id, href: (_a = tile.href) !== null && _a !== void 0 ? _a : undefined });
+            tile && this.tileClick.emit({ id: tile.id, href: (_a = tile.href) !== null && _a !== void 0 ? _a : undefined });
         };
         this.handleMouseOut = () => {
             this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;

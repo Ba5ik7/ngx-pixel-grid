@@ -1,6 +1,6 @@
 {
   "name": "@tmdjr/ngx-pixel-grid",
-  "version": "0.0.0-watch+1675015354012",
+  "version": "0.0.0-watch+1675015388631",
   "peerDependencies": {
     "@angular/common": "^14.2.0",
     "@angular/core": "^14.2.0"

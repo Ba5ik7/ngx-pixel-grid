@@ -86,7 +86,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
   handleMouseClick = (event: MouseEvent) => {
     const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
     const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
-    if (tile) this.tileClick.emit({ id: tile.id, href: tile.href ?? undefined });
+    tile && this.tileClick.emit({ id: tile.id, href: tile.href ?? undefined });
   }
 
   handleMouseOut = () => {
