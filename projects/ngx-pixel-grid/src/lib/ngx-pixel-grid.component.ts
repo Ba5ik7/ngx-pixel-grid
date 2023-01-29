@@ -10,10 +10,11 @@ import {
   Input,
   NgZone,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { PixelGrid } from './classes/pixel-grid';
-import { ISize, ITile, ITileClickEvent } from './interfaces/ngx-pixel-grid';
+import { ITile, ITileClickEvent } from './interfaces/ngx-pixel-grid';
 import { NgxPixelGridService } from './ngx-pixel-grid.service';
 
 @Component({
@@ -37,10 +38,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
 
   @Input() set pixels(tiles: ITile[]) {
     if (!tiles || !tiles.length) return;
-    this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(
-      this.tilesMatrix,
-      tiles
-    );
+    this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
   }
 
   @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: ElementRef<HTMLDivElement>;
@@ -152,5 +150,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
   selector: 'ngx-pixel-grid-tooltip',
   template: `<div class="tooltip"><div class="tooltip-content">{{text}}</div></div>`,
   styles: [`.tooltip {  background-color: #000; color: #fff; padding: 5px 10px; border-radius: 5px; }`],
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class NgxPixelGridTooltipComponent { @Input() text!: string; }
