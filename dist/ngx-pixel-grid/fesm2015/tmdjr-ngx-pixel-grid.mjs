@@ -137,36 +137,48 @@ class NgxPixelGridComponent {
             if (tile)
                 this.tileClick.emit({ id: tile.id, href: (_a = tile.href) !== null && _a !== void 0 ? _a : undefined });
         };
-        this.handleMouseMove = (event) => {
-            var _a;
-            const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
-            const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
-            if (tile) {
-                if (this.currentTileBeingHovered && this.currentTileBeingHovered.id === tile.id)
-                    return;
-                if (this.tooltipRef)
-                    this.tooltipRef.detach();
-                if (this.currentTileBeingHovered && this.currentTileBeingHovered.id !== tile.id) {
-                    this.currentTileBeingHovered.color = tile.color;
-                }
-                this.currentTileBeingHovered = tile;
-                this.currentTileBeingHovered.color = tile.hoverColor;
-                const positionStrategy = this.tooltipOverlay.position().global();
-                positionStrategy.top(`${event.clientY + 15}px`).left(`${event.clientX + 15}px`);
-                this.tooltipRef = this.tooltipOverlay.create({
-                    positionStrategy,
-                    hasBackdrop: false,
-                    scrollStrategy: this.tooltipOverlay.scrollStrategies.reposition()
-                });
-                const tooltipComponent = this.tooltipRef.attach(this.tooltipPortal);
-                tooltipComponent.instance.text = (_a = tile.tooltipText) !== null && _a !== void 0 ? _a : tile.id.toString();
-            }
-        };
         this.handleMouseOut = () => {
             if (this.currentTileBeingHovered)
                 this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
             if (this.tooltipRef)
                 this.tooltipRef.dispose();
+        };
+        this.handleMouseMove = (event) => {
+            var _a;
+            const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
+            const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
+            if (tile) {
+                // Kind of tricky here want to leave comment for future reference
+                // We are just trying swap out colors of the tile we are hovering on
+                // So a refernce is made to the tile we are hovering on and the color is changed
+                // If the tile that is currently being hovered on is the same as the tile we are hovering on, return
+                if (this.currentTileBeingHovered && this.currentTileBeingHovered.id === tile.id)
+                    return;
+                // If the tooltip is open, close it
+                // !@TODO - Should only detach if the new tile is on same tile group as the last
+                if (this.tooltipRef)
+                    this.tooltipRef.detach();
+                // If the tile that is currently being hovered on is different than the tile we are hovering on, 
+                // we need to change the color back to the original color
+                if (this.currentTileBeingHovered && this.currentTileBeingHovered.id !== tile.id) {
+                    this.currentTileBeingHovered.color = tile.color;
+                }
+                // Set the currentTileBeingHovered to the tile we are hovering on
+                this.currentTileBeingHovered = tile;
+                // Change the color of the tile we are hovering on to the hover color
+                this.currentTileBeingHovered.color = tile.hoverColor;
+                const positionStrategy = this.tooltipOverlay
+                    .position().global()
+                    .top(`${event.clientY + 15}px`)
+                    .left(`${event.clientX + 15}px`);
+                this.tooltipRef = this.tooltipOverlay.create({
+                    positionStrategy,
+                    hasBackdrop: false,
+                    scrollStrategy: this.tooltipOverlay.scrollStrategies.close()
+                });
+                const tooltipComponent = this.tooltipRef.attach(this.tooltipPortal);
+                tooltipComponent.instance.text = (_a = tile.tooltipText) !== null && _a !== void 0 ? _a : tile.id.toString();
+            }
         };
     }
     set pixels(tiles) {
@@ -195,11 +207,8 @@ class NgxPixelGridComponent {
         this.ngZone.runOutsideAngular(() => this.loop());
     }
     loop() {
-        // this.ctx.save();
-        // this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
         this.tilesMatrix.forEach(row => {
             row.forEach(tile => {
-                // If the tile is a pixel, then paint base64 image to the ctx
                 if (tile.isPixel) {
                     const img = new Image();
                     img.src = tile.img;
@@ -211,7 +220,6 @@ class NgxPixelGridComponent {
                 }
             });
         });
-        // this.ctx.restore();
         requestAnimationFrame(() => this.loop());
     }
 }
@@ -272,11 +280,11 @@ NgxPixelGridTooltipComponent.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type
             i0.ɵɵadvance(2);
             i0.ɵɵtextInterpolate(ctx.text);
         }
-    }, styles: ["[_nghost-%COMP%], .tooltip[_ngcontent-%COMP%]{pointer-events:none}.tooltip[_ngcontent-%COMP%]{background-color:#000;color:#fff;padding:5px 10px;border-radius:5px}"] });
+    }, styles: [".tooltip[_ngcontent-%COMP%]{background-color:#000;color:#fff;padding:5px 10px;border-radius:5px}"] });
 (function () {
     (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxPixelGridTooltipComponent, [{
             type: Component,
-            args: [{ selector: 'ngx-pixel-grid-tooltip', template: `<div class="tooltip"><div class="tooltip-content">{{text}}</div></div>`, styles: [":host,.tooltip{pointer-events:none}.tooltip{background-color:#000;color:#fff;padding:5px 10px;border-radius:5px}\n"] }]
+            args: [{ selector: 'ngx-pixel-grid-tooltip', template: `<div class="tooltip"><div class="tooltip-content">{{text}}</div></div>`, styles: [".tooltip{background-color:#000;color:#fff;padding:5px 10px;border-radius:5px}\n"] }]
         }], null, { text: [{
                 type: Input
             }] });

@@ -24,9 +24,9 @@ export declare class NgxPixelGridComponent implements AfterViewInit {
     ngAfterViewInit(): void;
     loop(): void;
     handleMouseClick: (event: MouseEvent) => void;
+    handleMouseOut: () => void;
     currentTileBeingHovered: ITile | undefined;
     handleMouseMove: (event: MouseEvent) => void;
-    handleMouseOut: () => void;
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxPixelGridComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<NgxPixelGridComponent, "ngx-pixel-grid", never, { "pixels": "pixels"; }, { "tileClick": "tileClick"; }, never, never, false>;
 }

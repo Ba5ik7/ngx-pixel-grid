@@ -79,13 +79,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
   }
   
   loop() {
-    
-    // this.ctx.save();
-    // this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
-
     this.tilesMatrix.forEach(row => {
       row.forEach(tile => {
-        // If the tile is a pixel, then paint base64 image to the ctx
         if (tile.isPixel) {
           const img = new Image();
           img.src = tile.img!;
@@ -97,7 +92,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
       });
     });
 
-    // this.ctx.restore();
     requestAnimationFrame(() => this.loop());
   }
 
@@ -107,53 +101,56 @@ export class NgxPixelGridComponent implements AfterViewInit {
     if (tile) this.tileClick.emit({ id: tile.id, href: tile.href ?? undefined });
   }
 
+  handleMouseOut = () => {
+    if (this.currentTileBeingHovered) this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
+    if (this.tooltipRef) this.tooltipRef.dispose();
+  }
+
   currentTileBeingHovered: ITile | undefined;
   handleMouseMove = (event: MouseEvent) => {
     const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
     const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
     if (tile) {
+      // Kind of tricky here want to leave comment for future reference
+      // We are just trying swap out colors of the tile we are hovering on
+      // So a refernce is made to the tile we are hovering on and the color is changed
+      // If the tile that is currently being hovered on is the same as the tile we are hovering on, return
       if (this.currentTileBeingHovered && this.currentTileBeingHovered.id === tile.id) return;
+      // If the tooltip is open, close it
+      // !@TODO - Should only detach if the new tile is on same tile group as the last
       if (this.tooltipRef) this.tooltipRef.detach();
+      // If the tile that is currently being hovered on is different than the tile we are hovering on, 
+      // we need to change the color back to the original color
       if (this.currentTileBeingHovered && this.currentTileBeingHovered.id !== tile.id) {
         this.currentTileBeingHovered.color = tile.color;
       }
 
+      // Set the currentTileBeingHovered to the tile we are hovering on
       this.currentTileBeingHovered = tile;
+
+      // Change the color of the tile we are hovering on to the hover color
       this.currentTileBeingHovered.color = tile.hoverColor;
 
-      const positionStrategy = this.tooltipOverlay.position().global();
-      positionStrategy.top(`${event.clientY + 15}px`).left(`${event.clientX + 15}px`);
+      const positionStrategy = this.tooltipOverlay
+      .position().global()
+      .top(`${event.clientY + 15}px`)
+      .left(`${event.clientX + 15}px`);
+
       this.tooltipRef = this.tooltipOverlay.create({
         positionStrategy,
         hasBackdrop: false,
-        scrollStrategy: this.tooltipOverlay.scrollStrategies.reposition()
+        scrollStrategy: this.tooltipOverlay.scrollStrategies.close()
       });
 
       const tooltipComponent = this.tooltipRef.attach(this.tooltipPortal);
       tooltipComponent.instance.text = tile.tooltipText ?? tile.id.toString();
     }
   }
-
-  handleMouseOut = () => {
-    if (this.currentTileBeingHovered) this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
-    if (this.tooltipRef) this.tooltipRef.dispose();
-  }
 }
-
 
 @Component({
   selector: 'ngx-pixel-grid-tooltip',
   template: `<div class="tooltip"><div class="tooltip-content">{{text}}</div></div>`,
-  styles: [`
-    :host, .tooltip { pointer-events: none; }
-    .tooltip { 
-      background-color: #000;
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-    }
-  `],
+  styles: [`.tooltip {  background-color: #000; color: #fff; padding: 5px 10px; border-radius: 5px; }`],
 })
-export class NgxPixelGridTooltipComponent {
-  @Input() text!: string;
-}
+export class NgxPixelGridTooltipComponent { @Input() text!: string; }
