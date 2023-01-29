@@ -20,6 +20,7 @@ export declare class NgxPixelGridComponent implements AfterViewInit {
     tooltipRef: OverlayRef;
     tooltipPortal: ComponentPortal<NgxPixelGridTooltipComponent>;
     onResize(): void;
+    ngOnInit(): void;
     ngAfterViewInit(): void;
     loop(): void;
     handleMouseClick: (event: MouseEvent) => void;

@@ -3,25 +3,55 @@ import { InjectionToken, Injectable, Optional, Inject, EventEmitter, Component, 
 import { ComponentPortal } from '@angular/cdk/portal';
 import * as i2 from '@angular/cdk/overlay';
 
+class PixelGrid {
+    constructor(rows, columns, gutter) {
+        this.rows = rows;
+        this.columns = columns;
+        this.gutter = gutter;
+    }
+    buildTilesMatrix(tileSize, tileColor, tileHoverColor) {
+        const tilesMatrix = [];
+        for (let row = 0; row < this.rows; row++) {
+            tilesMatrix[row] = [];
+            for (let column = 0; column < this.columns; column++) {
+                tilesMatrix[row][column] = {
+                    id: (row * this.columns + column).toString(),
+                    isPixel: false,
+                    coordinates: {
+                        x: (tileSize.width + this.gutter) * column,
+                        y: (tileSize.height + this.gutter) * row
+                    },
+                    size: tileSize,
+                    color: tileColor,
+                    hoverColor: tileHoverColor,
+                    tooltipText: `Tile ${row * this.columns + column}`
+                };
+            }
+        }
+        return tilesMatrix;
+    }
+}
+
 const NGX_PIXEL_GRID_OPTIONS = new InjectionToken('NGX_PIXEL_GRID_OPTIONS');
+const defaultOptions = {
+    introAnimation: true,
+    gutter: 1,
+    rows: 100,
+    columns: 100,
+    tileSize: { width: 10, height: 10 },
+    tileColor: 'rgb(140, 140, 140)',
+    tileHoverColor: 'rgb(70, 70, 70)'
+};
 class NgxPixelGridService {
     constructor(options) {
-        this.introAnimation = true;
-        this.rows = 100;
-        this.columns = 100;
-        this.gutter = 1;
-        this.tileSize = { width: 10, height: 10 };
-        this.tileColor = 'rgb(255, 255, 255)';
-        this.tileHoverColor = 'rgb(0, 0, 0)';
-        if (options) {
-            this.introAnimation = options.introAnimation;
-            this.rows = options.rows;
-            this.columns = options.columns;
-            this.gutter = options.gutter;
-            this.tileSize = options.tileSize;
-            this.tileColor = options.tileColor;
-            this.tileHoverColor = options.tileHoverColor;
-        }
+        this.options = defaultOptions;
+        options && Object.assign(this.options, options);
+    }
+    buildTilesMatrix() {
+        const { columns, rows, gutter, tileSize, tileColor, tileHoverColor } = this.options;
+        const pixelGrid = new PixelGrid(columns, rows, gutter);
+        const tilesMatrix = pixelGrid.buildTilesMatrix(tileSize, tileColor, tileHoverColor);
+        return { pixelGrid, tilesMatrix };
     }
     getPixelGridSize(tilesMatrix, gutter) {
         const width = tilesMatrix[0].length * tilesMatrix[0][0].size.width + (tilesMatrix[0].length - 1) * gutter;
@@ -60,7 +90,7 @@ class NgxPixelGridService {
     phyllotaxisLayout(tilesMatrix, xOffset = 0, yOffset = 0, iOffset = 0) {
         // theta determines the spiral of the layout
         const theta = Math.PI * (3 - Math.sqrt(5));
-        const pointRadius = this.tileSize.width / 2;
+        const pointRadius = this.options.tileSize.width / 2;
         tilesMatrix.forEach((row, i) => {
             const index = (i + iOffset) % tilesMatrix.length;
             const phylloX = pointRadius * Math.sqrt(index) * Math.cos(index * theta);
@@ -90,35 +120,6 @@ NgxPixelGridService.ɵprov = /*@__PURE__*/ i0.ɵɵdefineInjectable({ token: NgxP
                     }] }];
     }, null);
 })();
-
-class PixelGrid {
-    constructor(rows, columns, gutter) {
-        this.rows = rows;
-        this.columns = columns;
-        this.gutter = gutter;
-    }
-    buildTilesMatrix(tileSize, tileColor, tileHoverColor) {
-        const tilesMatrix = [];
-        for (let row = 0; row < this.rows; row++) {
-            tilesMatrix[row] = [];
-            for (let column = 0; column < this.columns; column++) {
-                tilesMatrix[row][column] = {
-                    id: (row * this.columns + column).toString(),
-                    isPixel: false,
-                    coordinates: {
-                        x: (tileSize.width + this.gutter) * column,
-                        y: (tileSize.height + this.gutter) * row
-                    },
-                    size: tileSize,
-                    color: tileColor,
-                    hoverColor: tileHoverColor,
-                    tooltipText: `Tile ${row * this.columns + column}`
-                };
-            }
-        }
-        return tilesMatrix;
-    }
-}
 
 const _c0 = ["pixelGridCanvasContatiner"];
 const _c1 = ["pixelGridCanvas"];
@@ -163,7 +164,7 @@ class NgxPixelGridComponent {
         };
         this.handleMouseOut = () => {
             if (this.currentTileBeingHovered)
-                this.currentTileBeingHovered.color = this.pixelGridService.tileColor;
+                this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
             if (this.tooltipRef)
                 this.tooltipRef.dispose();
         };
@@ -178,6 +179,11 @@ class NgxPixelGridComponent {
         this.pixelGridCanvas.nativeElement.width = pixelGridSize.width;
         this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
     }
+    ngOnInit() {
+        const { pixelGrid, tilesMatrix } = this.pixelGridService.buildTilesMatrix();
+        this.pixelGrid = pixelGrid;
+        this.tilesMatrix = tilesMatrix;
+    }
     ngAfterViewInit() {
         this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d');
         const nativeElement = this.pixelGridCanvas.nativeElement;
@@ -185,8 +191,6 @@ class NgxPixelGridComponent {
         nativeElement.addEventListener('click', this.handleMouseClick);
         nativeElement.addEventListener('mousemove', this.handleMouseMove);
         nativeElement.addEventListener('mouseout', this.handleMouseOut);
-        this.pixelGrid = new PixelGrid(this.pixelGridService.columns, this.pixelGridService.rows, this.pixelGridService.gutter);
-        this.tilesMatrix = this.pixelGrid.buildTilesMatrix(this.pixelGridService.tileSize, this.pixelGridService.tileColor, this.pixelGridService.tileHoverColor);
         this.onResize();
         this.ngZone.runOutsideAngular(() => this.loop());
     }

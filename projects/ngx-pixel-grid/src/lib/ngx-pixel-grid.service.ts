@@ -1,31 +1,37 @@
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
-import { HEX, IPixelGridOptions, ISize, ITile, RGB, RGBA } from './interfaces/ngx-pixel-grid';
+import { PixelGrid } from './classes/pixel-grid';
+import { IPixelGridOptions, IPixelGridService, ISize, ITile } from './interfaces/ngx-pixel-grid';
 
 export const NGX_PIXEL_GRID_OPTIONS = new InjectionToken<IPixelGridOptions>('NGX_PIXEL_GRID_OPTIONS');
+const defaultOptions: IPixelGridOptions = {
+  introAnimation: true,
+  gutter: 1,
+  rows: 100,
+  columns: 100,
+  tileSize: { width: 10, height: 10 },
+  tileColor: 'rgb(140, 140, 140)',
+  tileHoverColor: 'rgb(70, 70, 70)'
+};
+
 @Injectable({
   providedIn: 'root'
 })
-export class NgxPixelGridService implements IPixelGridOptions {
+export class NgxPixelGridService implements IPixelGridService {
 
   constructor(@Optional() @Inject(NGX_PIXEL_GRID_OPTIONS) options: IPixelGridOptions) { 
-    if (options) {
-      this.introAnimation = options.introAnimation;
-      this.rows = options.rows;
-      this.columns = options.columns;
-      this.gutter = options.gutter;
-      this.tileSize = options.tileSize;
-      this.tileColor = options.tileColor;
-      this.tileHoverColor = options.tileHoverColor;
-    }
+    options && Object.assign(this.options, options);
   }
+  options = defaultOptions;
 
-  introAnimation: boolean = true;
-  rows = 100;
-  columns = 100;
-  gutter = 1;
-  tileSize: ISize = { width: 10, height: 10 };
-  tileColor: RGB | RGBA | HEX = 'rgb(255, 255, 255)';
-  tileHoverColor: RGB | RGBA | HEX = 'rgb(0, 0, 0)';
+  buildTilesMatrix(): { pixelGrid: PixelGrid, tilesMatrix: ITile[][] } {
+    const {
+      columns, rows, gutter,
+      tileSize, tileColor, tileHoverColor
+  } = this.options
+    const pixelGrid = new PixelGrid(columns, rows, gutter);
+    const tilesMatrix = pixelGrid.buildTilesMatrix(tileSize, tileColor, tileHoverColor);
+    return { pixelGrid, tilesMatrix};
+  }
 
   getPixelGridSize(tilesMatrix: ITile[][], gutter: number): ISize {
     const width = tilesMatrix[0].length * tilesMatrix[0][0].size.width + (tilesMatrix[0].length - 1) * gutter;
@@ -68,7 +74,7 @@ export class NgxPixelGridService implements IPixelGridOptions {
   phyllotaxisLayout(tilesMatrix: ITile[][], xOffset = 0, yOffset = 0, iOffset = 0): ITile[][] {
     // theta determines the spiral of the layout
     const theta = Math.PI * (3 - Math.sqrt(5));
-    const pointRadius = this.tileSize.width / 2;
+    const pointRadius = this.options.tileSize.width / 2;
   
     tilesMatrix.forEach((row, i) => {
       const index = (i + iOffset) % tilesMatrix.length;

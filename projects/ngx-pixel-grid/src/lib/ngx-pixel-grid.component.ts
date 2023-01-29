@@ -60,6 +60,12 @@ export class NgxPixelGridComponent implements AfterViewInit {
     this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
   }
 
+  ngOnInit(): void {    
+    const { pixelGrid, tilesMatrix } = this.pixelGridService.buildTilesMatrix();
+    this.pixelGrid = pixelGrid;
+    this.tilesMatrix = tilesMatrix;
+  }
+
   ngAfterViewInit(): void {
     this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d')!;
     const nativeElement = this.pixelGridCanvas.nativeElement;
@@ -67,17 +73,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
     nativeElement.addEventListener('click', this.handleMouseClick);
     nativeElement.addEventListener('mousemove', this.handleMouseMove);
     nativeElement.addEventListener('mouseout', this.handleMouseOut);
-
-    this.pixelGrid = new PixelGrid(
-      this.pixelGridService.columns,
-      this.pixelGridService.rows,
-      this.pixelGridService.gutter
-    );
-    this.tilesMatrix = this.pixelGrid.buildTilesMatrix(
-      this.pixelGridService.tileSize,
-      this.pixelGridService.tileColor,
-      this.pixelGridService.tileHoverColor
-    );
 
     this.onResize();
     this.ngZone.runOutsideAngular(() => this.loop());
@@ -140,7 +135,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
   }
 
   handleMouseOut = () => {
-    if (this.currentTileBeingHovered) this.currentTileBeingHovered.color = this.pixelGridService.tileColor;
+    if (this.currentTileBeingHovered) this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
     if (this.tooltipRef) this.tooltipRef.dispose();
   }
 }
