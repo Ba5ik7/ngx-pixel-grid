@@ -19,7 +19,6 @@ export declare class NgxPixelGridComponent implements AfterViewInit {
     tilesMatrix: ITile[][];
     tooltipRef: OverlayRef;
     tooltipPortal: ComponentPortal<NgxPixelGridTooltipComponent>;
-    onResize(): void;
     ngOnInit(): void;
     ngAfterViewInit(): void;
     loop(): void;

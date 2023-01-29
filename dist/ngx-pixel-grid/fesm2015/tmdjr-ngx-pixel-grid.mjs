@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { InjectionToken, Injectable, Optional, Inject, EventEmitter, Component, ChangeDetectionStrategy, Output, Input, ViewChild, HostListener, ViewEncapsulation, NgModule } from '@angular/core';
+import { InjectionToken, Injectable, Optional, Inject, EventEmitter, Component, ChangeDetectionStrategy, Output, Input, ViewChild, ViewEncapsulation, NgModule } from '@angular/core';
 import { ComponentPortal } from '@angular/cdk/portal';
 import * as i2 from '@angular/cdk/overlay';
 
@@ -47,6 +47,14 @@ class NgxPixelGridService {
         this.options = defaultOptions;
         options && Object.assign(this.options, options);
     }
+    createCtx(tilesMatrix, canvas) {
+        const ctx = canvas.getContext('2d');
+        const pixelGridSize = this.getPixelGridSize(tilesMatrix, this.options.gutter);
+        canvas.width = pixelGridSize.width;
+        canvas.height = pixelGridSize.height;
+        canvas.style.cursor = 'pointer';
+        return ctx;
+    }
     buildTilesMatrix() {
         const { columns, rows, gutter, tileSize, tileColor, tileHoverColor } = this.options;
         const pixelGrid = new PixelGrid(columns, rows, gutter);
@@ -62,6 +70,13 @@ class NgxPixelGridService {
         tiles.forEach((tile) => {
             const tileCoordinates = tile.coordinates;
             const { x, y } = tileCoordinates;
+            // make a copy of tilesMatrix[x][y]
+            const test = `${tilesMatrix[x][y].id}`;
+            console.log({
+                test,
+                shouldBe: `${(x + 10) * (y + 10)}`,
+                tile
+            });
             const _tile = tilesMatrix[x][y];
             Object.assign(_tile, {
                 isPixel: true,
@@ -186,24 +201,17 @@ class NgxPixelGridComponent {
             return;
         this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
     }
-    onResize() {
-        const pixelGridSize = this.pixelGridService.getPixelGridSize(this.tilesMatrix, this.pixelGrid.gutter);
-        this.pixelGridCanvas.nativeElement.width = pixelGridSize.width;
-        this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
-    }
     ngOnInit() {
         const { pixelGrid, tilesMatrix } = this.pixelGridService.buildTilesMatrix();
         this.pixelGrid = pixelGrid;
         this.tilesMatrix = tilesMatrix;
     }
     ngAfterViewInit() {
-        this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d');
-        const nativeElement = this.pixelGridCanvas.nativeElement;
-        nativeElement.style.cursor = 'pointer';
-        nativeElement.addEventListener('click', this.handleMouseClick);
-        nativeElement.addEventListener('mousemove', this.handleMouseMove);
-        nativeElement.addEventListener('mouseout', this.handleMouseOut);
-        this.onResize();
+        const canvas = this.pixelGridCanvas.nativeElement;
+        this.ctx = this.pixelGridService.createCtx(this.tilesMatrix, canvas);
+        canvas.addEventListener('click', this.handleMouseClick);
+        canvas.addEventListener('mousemove', this.handleMouseMove);
+        canvas.addEventListener('mouseout', this.handleMouseOut);
         this.ngZone.runOutsideAngular(() => this.loop());
     }
     loop() {
@@ -234,10 +242,6 @@ NgxPixelGridComponent.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: NgxPi
             i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.pixelGridCanvasContatiner = _t.first);
             i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.pixelGridCanvas = _t.first);
         }
-    }, hostBindings: function NgxPixelGridComponent_HostBindings(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵlistener("resize", function NgxPixelGridComponent_resize_HostBindingHandler() { return ctx.onResize(); }, false, i0.ɵɵresolveWindow);
-        }
     }, inputs: { pixels: "pixels" }, outputs: { tileClick: "tileClick" }, decls: 4, vars: 0, consts: [[1, "pixel-grid-canvas-container"], ["pixelGridCanvasContatiner", ""], ["pixelGridCanvas", ""]], template: function NgxPixelGridComponent_Template(rf, ctx) {
         if (rf & 1) {
             i0.ɵɵelementStart(0, "div", 0, 1);
@@ -262,9 +266,6 @@ NgxPixelGridComponent.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: NgxPi
             }], pixelGridCanvas: [{
                 type: ViewChild,
                 args: ['pixelGridCanvas']
-            }], onResize: [{
-                type: HostListener,
-                args: ['window:resize']
             }] });
 })();
 class NgxPixelGridTooltipComponent {

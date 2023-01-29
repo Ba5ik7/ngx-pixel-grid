@@ -51,13 +51,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
   tooltipRef!: OverlayRef;
   tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
 
-  @HostListener('window:resize')
-  onResize() {
-    const pixelGridSize = this.pixelGridService.getPixelGridSize(this.tilesMatrix, this.pixelGrid.gutter);
-    this.pixelGridCanvas.nativeElement.width = pixelGridSize.width;
-    this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
-  }
-
   ngOnInit(): void {    
     const { pixelGrid, tilesMatrix } = this.pixelGridService.buildTilesMatrix();
     this.pixelGrid = pixelGrid;
@@ -65,18 +58,16 @@ export class NgxPixelGridComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d')!;
-    const nativeElement = this.pixelGridCanvas.nativeElement;
-    nativeElement.style.cursor = 'pointer';
-    nativeElement.addEventListener('click', this.handleMouseClick);
-    nativeElement.addEventListener('mousemove', this.handleMouseMove);
-    nativeElement.addEventListener('mouseout', this.handleMouseOut);
-
-    this.onResize();
+    const canvas = this.pixelGridCanvas.nativeElement;
+    this.ctx = this.pixelGridService.createCtx(this.tilesMatrix, canvas);
+    canvas.addEventListener('click', this.handleMouseClick);
+    canvas.addEventListener('mousemove', this.handleMouseMove);
+    canvas.addEventListener('mouseout', this.handleMouseOut);
+    
     this.ngZone.runOutsideAngular(() => this.loop());
   }
   
-  loop() {
+  loop(): void {
     this.tilesMatrix.forEach(row => {
       row.forEach(tile => {
         if (tile.isPixel) {

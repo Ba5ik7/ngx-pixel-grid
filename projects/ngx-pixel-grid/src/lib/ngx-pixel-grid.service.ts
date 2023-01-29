@@ -23,6 +23,16 @@ export class NgxPixelGridService implements IPixelGridService {
   }
   options = defaultOptions;
 
+  createCtx(tilesMatrix: ITile[][], canvas: HTMLCanvasElement): CanvasRenderingContext2D {
+    const ctx = canvas.getContext('2d')!;
+    const pixelGridSize = 
+      this.getPixelGridSize(tilesMatrix, this.options.gutter);
+    canvas.width = pixelGridSize.width;
+    canvas.height = pixelGridSize.height;
+    canvas.style.cursor = 'pointer';
+    return ctx;
+  }
+
   buildTilesMatrix(): { pixelGrid: PixelGrid, tilesMatrix: ITile[][] } {
     const {
       columns, rows, gutter,
@@ -43,6 +53,15 @@ export class NgxPixelGridService implements IPixelGridService {
     tiles.forEach((tile: ITile) => {
       const tileCoordinates = tile.coordinates;
       const { x, y } = tileCoordinates;
+      // make a copy of tilesMatrix[x][y]
+      const test = `${tilesMatrix[x][y].id}`;
+      console.log({
+        test,
+        shouldBe: `${(x + 10)  * (y + 10)}`,
+        tile
+      });
+      
+
       const _tile = tilesMatrix[x][y];
       Object.assign(_tile, {
         isPixel: true,

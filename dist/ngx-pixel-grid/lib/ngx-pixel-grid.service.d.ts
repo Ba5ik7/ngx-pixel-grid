@@ -6,6 +6,7 @@ export declare const NGX_PIXEL_GRID_OPTIONS: InjectionToken<IPixelGridOptions>;
 export declare class NgxPixelGridService implements IPixelGridService {
     constructor(options: IPixelGridOptions);
     options: IPixelGridOptions;
+    createCtx(tilesMatrix: ITile[][], canvas: HTMLCanvasElement): CanvasRenderingContext2D;
     buildTilesMatrix(): {
         pixelGrid: PixelGrid;
         tilesMatrix: ITile[][];
