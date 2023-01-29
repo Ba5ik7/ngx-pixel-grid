@@ -43,6 +43,20 @@ class NgxPixelGridService {
         });
         return tilesMatrix;
     }
+    whatTileIsMouseOver(tilesMatrix, rect, event) {
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        let returnTile;
+        tilesMatrix.forEach((row) => {
+            row.forEach((tile) => {
+                if (x >= tile.coordinates.x && x <= tile.coordinates.x + tile.size.width &&
+                    y >= tile.coordinates.y && y <= tile.coordinates.y + tile.size.height) {
+                    returnTile = tile;
+                }
+            });
+        });
+        return returnTile ?? false;
+    }
     phyllotaxisLayout(tilesMatrix, xOffset = 0, yOffset = 0, iOffset = 0) {
         // theta determines the spiral of the layout
         const theta = Math.PI * (3 - Math.sqrt(5));

@@ -49,10 +49,25 @@ export class NgxPixelGridService implements IPixelGridOptions {
     return tilesMatrix;
   }
 
+  whatTileIsMouseOver(tilesMatrix: ITile[][], rect: DOMRect, event: MouseEvent): ITile | undefined {
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    let returnTile: ITile | undefined;
+    tilesMatrix.forEach((row) => {
+      row.forEach((tile) => {
+        if (x >= tile.coordinates.x && x <= tile.coordinates.x + tile.size.width &&
+            y >= tile.coordinates.y && y <= tile.coordinates.y + tile.size.height) {
+            returnTile = tile;
+          }
+      });
+    });
+    return returnTile;
+  }
+
   phyllotaxisLayout(tilesMatrix: ITile[][], xOffset = 0, yOffset = 0, iOffset = 0) {
     // theta determines the spiral of the layout
     const theta = Math.PI * (3 - Math.sqrt(5));
-  
     const pointRadius = this.tileSize.width / 2;
   
     tilesMatrix.forEach((row, i) => {

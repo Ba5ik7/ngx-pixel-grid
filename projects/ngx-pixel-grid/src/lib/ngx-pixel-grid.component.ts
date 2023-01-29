@@ -106,32 +106,16 @@ export class NgxPixelGridComponent implements AfterViewInit {
     requestAnimationFrame(() => this.loop());
   }
 
-  whatTileIsMouseOver(event: MouseEvent): ITile | undefined {
-    const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    let returnTile = undefined;
-    for(let i = 0; i < this.tilesMatrix.length; i++) {
-      for(let j = 0; j < this.tilesMatrix[i].length; j++) {
-        const tile = this.tilesMatrix[i][j];
-        if (x >= tile.coordinates.x && x <= tile.coordinates.x + tile.size.width &&
-          y >= tile.coordinates.y && y <= tile.coordinates.y + tile.size.height) {
-            returnTile = tile;
-          }
-      }
-    }
-    return returnTile;
-  }
-
   handleMouseClick = (event: MouseEvent) => {
-    const tile = this.whatTileIsMouseOver(event);
+    const tile = this.pixelGridService.whatTileIsMouseOver(event, this.tilesMatrix, event);
     if (tile) this.tileClick.emit({ id: tile.id, href: tile.href ?? undefined });
   }
 
   currentTileBeingHovered: ITile | undefined;
   tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
   handleMouseMove = (event: MouseEvent) => {
-    const tile = this.whatTileIsMouseOver(event);
+    const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
+    const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
     if (tile) {
       // If the tile is the same as the one being hovered, do nothing
       if (this.currentTileBeingHovered && this.currentTileBeingHovered.id === tile.id) return;
@@ -162,7 +146,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
   }
 
   handleMouseOut = () => {
-    // Clean up
     if (this.currentTileBeingHovered) this.currentTileBeingHovered.color = this.pixelGridService.tileColor;
     if (this.tooltipRef) this.tooltipRef.dispose();
   }
