@@ -84,7 +84,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
   
   loop() {
     
-    this.ctx.save();
+    // this.ctx.save();
     // this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
 
     this.pixelGridTilesMatrix.forEach(row => {
@@ -94,7 +94,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
           const img = new Image();
           img.src = tile.img!;
           this.ctx.drawImage(img, tile.coordinates.x, tile.coordinates.y, tile.size.width + 1, tile.size.height + 1);
-          return;
         } else {
           this.ctx.fillStyle = tile.color;
           this.ctx.fillRect(tile.coordinates.x, tile.coordinates.y, tile.size.width, tile.size.height);
@@ -102,7 +101,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
       });
     });
 
-    this.ctx.restore();
+    // this.ctx.restore();
     requestAnimationFrame(() => this.loop());
   }
 

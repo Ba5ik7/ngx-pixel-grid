@@ -37,8 +37,8 @@ import { NGX_PIXEL_GRID_OPTIONS } from 'ngx-pixel-grid';
           width: 9,
           height: 9
         },
-        tileColor: 'rgb(140, 140, 140)',
-        tileHoverColor: 'rgb(210, 210, 210)'
+        tileColor: 'rgba(140, 140, 140, 1)',
+        tileHoverColor: 'rgba(210, 210, 210, 1)'
       }
     }
   ],

@@ -36,6 +36,21 @@ class NgxPixelGridService {
         });
         return tilesMatrix;
     }
+    phyllotaxisLayout(tilesMatrix, xOffset = 0, yOffset = 0, iOffset = 0) {
+        // theta determines the spiral of the layout
+        const theta = Math.PI * (3 - Math.sqrt(5));
+        const pointRadius = this.tileSize.width / 2;
+        tilesMatrix.forEach((row, i) => {
+            const index = (i + iOffset) % tilesMatrix.length;
+            const phylloX = pointRadius * Math.sqrt(index) * Math.cos(index * theta);
+            const phylloY = pointRadius * Math.sqrt(index) * Math.sin(index * theta);
+            row.forEach(tile => {
+                tile.coordinates.x = xOffset + phylloX - pointRadius;
+                tile.coordinates.y = yOffset + phylloY - pointRadius;
+            });
+        });
+        return tilesMatrix;
+    }
 }
 NgxPixelGridService.ɵfac = function NgxPixelGridService_Factory(t) { return new (t || NgxPixelGridService)(i0.ɵɵinject(NGX_PIXEL_GRID_OPTIONS, 8)); };
 NgxPixelGridService.ɵprov = /*@__PURE__*/ i0.ɵɵdefineInjectable({ token: NgxPixelGridService, factory: NgxPixelGridService.ɵfac, providedIn: 'root' });
@@ -153,7 +168,7 @@ class NgxPixelGridComponent {
         this.ngZone.runOutsideAngular(() => this.loop());
     }
     loop() {
-        this.ctx.save();
+        // this.ctx.save();
         // this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
         this.pixelGridTilesMatrix.forEach(row => {
             row.forEach(tile => {
@@ -162,7 +177,6 @@ class NgxPixelGridComponent {
                     const img = new Image();
                     img.src = tile.img;
                     this.ctx.drawImage(img, tile.coordinates.x, tile.coordinates.y, tile.size.width + 1, tile.size.height + 1);
-                    return;
                 }
                 else {
                     this.ctx.fillStyle = tile.color;
@@ -170,7 +184,7 @@ class NgxPixelGridComponent {
                 }
             });
         });
-        this.ctx.restore();
+        // this.ctx.restore();
         requestAnimationFrame(() => this.loop());
     }
     getPixelGridSize(pixelGridTilesMatrix, gutter) {
