@@ -26,13 +26,15 @@ class NgxPixelGridService {
     mergeTilesMatrix(tilesMatrix, tiles) {
         tiles.forEach((tile) => {
             const tileCoordinates = tile.coordinates;
-            const y = tileCoordinates.y;
-            const x = tileCoordinates.x;
-            tilesMatrix[x][y].isPixel = true;
-            tilesMatrix[x][y].img = tile.img;
-            tilesMatrix[x][y].color = 'rbg(0, 0, 0)';
-            tilesMatrix[x][y].href = tile.href;
-            tilesMatrix[x][y].tooltipText = tile.tooltipText;
+            const { x, y } = tileCoordinates;
+            const _tile = tilesMatrix[x][y];
+            Object.assign(_tile, {
+                isPixel: true,
+                img: tile.img,
+                color: 'rbg(0, 0, 0)',
+                href: tile.href,
+                tooltipText: tile.tooltipText
+            });
         });
         return tilesMatrix;
     }
