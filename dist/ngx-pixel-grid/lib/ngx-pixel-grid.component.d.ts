@@ -2,7 +2,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { AfterViewInit, ElementRef, EventEmitter, NgZone } from '@angular/core';
 import { PixelGrid } from './classes/pixel-grid';
-import { ISize, ITile, ITileClickEvent } from './interfaces/ngx-pixel-grid';
+import { ITile, ITileClickEvent } from './interfaces/ngx-pixel-grid';
 import { NgxPixelGridService } from './ngx-pixel-grid.service';
 import * as i0 from "@angular/core";
 export declare class NgxPixelGridComponent implements AfterViewInit {
@@ -16,12 +16,11 @@ export declare class NgxPixelGridComponent implements AfterViewInit {
     pixelGridCanvas: ElementRef<HTMLCanvasElement>;
     ctx: CanvasRenderingContext2D;
     pixelGrid: PixelGrid;
-    pixelGridTilesMatrix: ITile[][];
+    tilesMatrix: ITile[][];
     tooltipRef: OverlayRef;
     onResize(): void;
     ngAfterViewInit(): void;
     loop(): void;
-    getPixelGridSize(pixelGridTilesMatrix: ITile[][], gutter: number): ISize;
     whatTileIsMouseOver(event: MouseEvent): ITile | undefined;
     handleMouseClick: (event: MouseEvent) => void;
     currentTileBeingHovered: ITile | undefined;

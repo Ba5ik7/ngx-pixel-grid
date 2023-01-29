@@ -37,8 +37,8 @@ export class NgxPixelGridComponent implements AfterViewInit {
 
   @Input() set pixels(tiles: ITile[]) {
     if (!tiles || !tiles.length) return;
-    this.pixelGridTilesMatrix = this.pixelGridService.mergeTilesMatrix(
-      this.pixelGridTilesMatrix,
+    this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(
+      this.tilesMatrix,
       tiles
     );
   }
@@ -48,13 +48,14 @@ export class NgxPixelGridComponent implements AfterViewInit {
 
   ctx!: CanvasRenderingContext2D;
   pixelGrid!: PixelGrid;
-  pixelGridTilesMatrix!: ITile[][];
+  tilesMatrix!: ITile[][];
 
   tooltipRef!: OverlayRef;
 
   @HostListener('window:resize')
   onResize() {
-    const pixelGridSize = this.getPixelGridSize(this.pixelGridTilesMatrix, this.pixelGrid.gutter);
+    const pixelGridSize = this.pixelGridService
+      .getPixelGridSize(this.tilesMatrix, this.pixelGrid.gutter);
     this.pixelGridCanvas.nativeElement.width = pixelGridSize.width;
     this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
   }
@@ -72,7 +73,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
       this.pixelGridService.rows,
       this.pixelGridService.gutter
     );
-    this.pixelGridTilesMatrix = this.pixelGrid.buildTilesMatrix(
+    this.tilesMatrix = this.pixelGrid.buildTilesMatrix(
       this.pixelGridService.tileSize,
       this.pixelGridService.tileColor,
       this.pixelGridService.tileHoverColor
@@ -87,7 +88,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
     // this.ctx.save();
     // this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
 
-    this.pixelGridTilesMatrix.forEach(row => {
+    this.tilesMatrix.forEach(row => {
       row.forEach(tile => {
         // If the tile is a pixel, then paint base64 image to the ctx
         if (tile.isPixel) {
@@ -105,20 +106,14 @@ export class NgxPixelGridComponent implements AfterViewInit {
     requestAnimationFrame(() => this.loop());
   }
 
-  getPixelGridSize(pixelGridTilesMatrix: ITile[][], gutter: number): ISize {
-    const width = pixelGridTilesMatrix[0].length * pixelGridTilesMatrix[0][0].size.width + (pixelGridTilesMatrix[0].length - 1) * gutter;
-    const height = pixelGridTilesMatrix.length * pixelGridTilesMatrix[0][0].size.height + (pixelGridTilesMatrix.length - 1) * gutter;
-    return { width, height };
-  }
-
   whatTileIsMouseOver(event: MouseEvent): ITile | undefined {
     const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     let returnTile = undefined;
-    for(let i = 0; i < this.pixelGridTilesMatrix.length; i++) {
-      for(let j = 0; j < this.pixelGridTilesMatrix[i].length; j++) {
-        const tile = this.pixelGridTilesMatrix[i][j];
+    for(let i = 0; i < this.tilesMatrix.length; i++) {
+      for(let j = 0; j < this.tilesMatrix[i].length; j++) {
+        const tile = this.tilesMatrix[i][j];
         if (x >= tile.coordinates.x && x <= tile.coordinates.x + tile.size.width &&
           y >= tile.coordinates.y && y <= tile.coordinates.y + tile.size.height) {
             returnTile = tile;

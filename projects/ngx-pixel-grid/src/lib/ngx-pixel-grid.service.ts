@@ -27,6 +27,12 @@ export class NgxPixelGridService implements IPixelGridOptions {
   tileColor: RGB | RGBA | HEX = 'rgb(255, 255, 255)';
   tileHoverColor: RGB | RGBA | HEX = 'rgb(0, 0, 0)';
 
+  getPixelGridSize(tilesMatrix: ITile[][], gutter: number): ISize {
+    const width = tilesMatrix[0].length * tilesMatrix[0][0].size.width + (tilesMatrix[0].length - 1) * gutter;
+    const height = tilesMatrix.length * tilesMatrix[0][0].size.height + (tilesMatrix.length - 1) * gutter;
+    return { width, height };
+  }
+
   mergeTilesMatrix(tilesMatrix: ITile[][], tiles: ITile[]): ITile[][] {
     tiles.forEach((tile: ITile) => {
       const tileCoordinates = tile.coordinates;

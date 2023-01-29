@@ -11,6 +11,7 @@ export declare class NgxPixelGridService implements IPixelGridOptions {
     tileSize: ISize;
     tileColor: RGB | RGBA | HEX;
     tileHoverColor: RGB | RGBA | HEX;
+    getPixelGridSize(tilesMatrix: ITile[][], gutter: number): ISize;
     mergeTilesMatrix(tilesMatrix: ITile[][], tiles: ITile[]): ITile[][];
     phyllotaxisLayout(tilesMatrix: ITile[][], xOffset?: number, yOffset?: number, iOffset?: number): ITile[][];
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxPixelGridService, [{ optional: true; }]>;
