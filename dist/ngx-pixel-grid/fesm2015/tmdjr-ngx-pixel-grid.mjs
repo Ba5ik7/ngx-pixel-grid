@@ -153,18 +153,17 @@ class NgxPixelGridComponent {
                 this.tileClick.emit({ id: tile.id, href: (_a = tile.href) !== null && _a !== void 0 ? _a : undefined });
         };
         this.handleMouseOut = () => {
-            if (this.currentTileBeingHovered)
-                this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
-            if (this.tooltipRef)
-                this.tooltipRef.dispose();
+            this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
+            this.currentTileBeingHovered = undefined;
+            this.tooltipRef.dispose();
         };
         this.handleMouseMove = (event) => {
             var _a;
             const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
             const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
             if (tile) {
-                // Kind of tricky here want to leave comment for future reference
-                // We are just trying swap out colors of the tile we are hovering on
+                // Kind of tricky here, want to leave comment for future reference
+                // We are just trying to swap out colors of the tile we are hovering on
                 // So a refernce is made to the tile we are hovering on and the color is changed
                 // If the tile that is currently being hovered on is the same as the tile we are hovering on, return
                 if (this.currentTileBeingHovered && this.currentTileBeingHovered.id === tile.id)
@@ -178,7 +177,7 @@ class NgxPixelGridComponent {
                 if (this.currentTileBeingHovered && this.currentTileBeingHovered.id !== tile.id) {
                     this.currentTileBeingHovered.color = tile.color;
                 }
-                // Set the currentTileBeingHovered to the tile we are hovering on
+                // Set the reference to the tile we are hovering on
                 this.currentTileBeingHovered = tile;
                 // Change the color of the tile we are hovering on to the hover color
                 this.currentTileBeingHovered.color = tile.hoverColor;
