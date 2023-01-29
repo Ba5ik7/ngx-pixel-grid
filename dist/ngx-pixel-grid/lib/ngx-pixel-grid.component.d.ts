@@ -18,13 +18,12 @@ export declare class NgxPixelGridComponent implements AfterViewInit {
     pixelGrid: PixelGrid;
     tilesMatrix: ITile[][];
     tooltipRef: OverlayRef;
+    tooltipPortal: ComponentPortal<NgxPixelGridTooltipComponent>;
     onResize(): void;
     ngAfterViewInit(): void;
     loop(): void;
-    whatTileIsMouseOver(event: MouseEvent): ITile | undefined;
     handleMouseClick: (event: MouseEvent) => void;
     currentTileBeingHovered: ITile | undefined;
-    tooltipPortal: ComponentPortal<NgxPixelGridTooltipComponent>;
     handleMouseMove: (event: MouseEvent) => void;
     handleMouseOut: () => void;
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxPixelGridComponent, never>;

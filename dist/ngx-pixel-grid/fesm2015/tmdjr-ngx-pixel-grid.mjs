@@ -55,7 +55,7 @@ class NgxPixelGridService {
                 }
             });
         });
-        return returnTile !== null && returnTile !== void 0 ? returnTile : false;
+        return returnTile;
     }
     phyllotaxisLayout(tilesMatrix, xOffset = 0, yOffset = 0, iOffset = 0) {
         // theta determines the spiral of the layout
@@ -128,31 +128,28 @@ class NgxPixelGridComponent {
         this.pixelGridService = pixelGridService;
         this.tooltipOverlay = tooltipOverlay;
         this.tileClick = new EventEmitter();
+        this.tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
         this.handleMouseClick = (event) => {
             var _a;
-            const tile = this.whatTileIsMouseOver(event);
+            const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
+            const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
             if (tile)
                 this.tileClick.emit({ id: tile.id, href: (_a = tile.href) !== null && _a !== void 0 ? _a : undefined });
         };
-        this.tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
         this.handleMouseMove = (event) => {
             var _a;
-            const tile = this.whatTileIsMouseOver(event);
+            const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
+            const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
             if (tile) {
-                // If the tile is the same as the one being hovered, do nothing
                 if (this.currentTileBeingHovered && this.currentTileBeingHovered.id === tile.id)
                     return;
-                // If there is a tile being hovered, reset its color
+                if (this.tooltipRef)
+                    this.tooltipRef.detach();
                 if (this.currentTileBeingHovered && this.currentTileBeingHovered.id !== tile.id) {
                     this.currentTileBeingHovered.color = tile.color;
                 }
-                // If there is a tooltip being shown, destroy it
-                if (this.tooltipRef)
-                    this.tooltipRef.detach();
-                // Set the new tile being hovered
                 this.currentTileBeingHovered = tile;
                 this.currentTileBeingHovered.color = tile.hoverColor;
-                // Create the tooltip strategy
                 const positionStrategy = this.tooltipOverlay.position().global();
                 positionStrategy.top(`${event.clientY + 15}px`).left(`${event.clientX + 15}px`);
                 this.tooltipRef = this.tooltipOverlay.create({
@@ -160,13 +157,11 @@ class NgxPixelGridComponent {
                     hasBackdrop: false,
                     scrollStrategy: this.tooltipOverlay.scrollStrategies.reposition()
                 });
-                // Create the tooltip component
                 const tooltipComponent = this.tooltipRef.attach(this.tooltipPortal);
                 tooltipComponent.instance.text = (_a = tile.tooltipText) !== null && _a !== void 0 ? _a : tile.id.toString();
             }
         };
         this.handleMouseOut = () => {
-            // Clean up
             if (this.currentTileBeingHovered)
                 this.currentTileBeingHovered.color = this.pixelGridService.tileColor;
             if (this.tooltipRef)
@@ -179,17 +174,17 @@ class NgxPixelGridComponent {
         this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
     }
     onResize() {
-        const pixelGridSize = this.pixelGridService
-            .getPixelGridSize(this.tilesMatrix, this.pixelGrid.gutter);
+        const pixelGridSize = this.pixelGridService.getPixelGridSize(this.tilesMatrix, this.pixelGrid.gutter);
         this.pixelGridCanvas.nativeElement.width = pixelGridSize.width;
         this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
     }
     ngAfterViewInit() {
         this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d');
-        this.pixelGridCanvasContatiner.nativeElement.style.cursor = 'pointer';
-        this.pixelGridCanvas.nativeElement.addEventListener('click', this.handleMouseClick);
-        this.pixelGridCanvas.nativeElement.addEventListener('mousemove', this.handleMouseMove);
-        this.pixelGridCanvas.nativeElement.addEventListener('mouseout', this.handleMouseOut);
+        const nativeElement = this.pixelGridCanvas.nativeElement;
+        nativeElement.style.cursor = 'pointer';
+        nativeElement.addEventListener('click', this.handleMouseClick);
+        nativeElement.addEventListener('mousemove', this.handleMouseMove);
+        nativeElement.addEventListener('mouseout', this.handleMouseOut);
         this.pixelGrid = new PixelGrid(this.pixelGridService.columns, this.pixelGridService.rows, this.pixelGridService.gutter);
         this.tilesMatrix = this.pixelGrid.buildTilesMatrix(this.pixelGridService.tileSize, this.pixelGridService.tileColor, this.pixelGridService.tileHoverColor);
         this.onResize();
@@ -214,22 +209,6 @@ class NgxPixelGridComponent {
         });
         // this.ctx.restore();
         requestAnimationFrame(() => this.loop());
-    }
-    whatTileIsMouseOver(event) {
-        const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        let returnTile = undefined;
-        for (let i = 0; i < this.tilesMatrix.length; i++) {
-            for (let j = 0; j < this.tilesMatrix[i].length; j++) {
-                const tile = this.tilesMatrix[i][j];
-                if (x >= tile.coordinates.x && x <= tile.coordinates.x + tile.size.width &&
-                    y >= tile.coordinates.y && y <= tile.coordinates.y + tile.size.height) {
-                    returnTile = tile;
-                }
-            }
-        }
-        return returnTile;
     }
 }
 NgxPixelGridComponent.ɵfac = function NgxPixelGridComponent_Factory(t) { return new (t || NgxPixelGridComponent)(i0.ɵɵdirectiveInject(i0.NgZone), i0.ɵɵdirectiveInject(NgxPixelGridService), i0.ɵɵdirectiveInject(i2.Overlay)); };

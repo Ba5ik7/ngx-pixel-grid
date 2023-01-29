@@ -51,22 +51,22 @@ export class NgxPixelGridComponent implements AfterViewInit {
   tilesMatrix!: ITile[][];
 
   tooltipRef!: OverlayRef;
+  tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
 
   @HostListener('window:resize')
   onResize() {
-    const pixelGridSize = this.pixelGridService
-      .getPixelGridSize(this.tilesMatrix, this.pixelGrid.gutter);
+    const pixelGridSize = this.pixelGridService.getPixelGridSize(this.tilesMatrix, this.pixelGrid.gutter);
     this.pixelGridCanvas.nativeElement.width = pixelGridSize.width;
     this.pixelGridCanvas.nativeElement.height = pixelGridSize.height;
   }
 
   ngAfterViewInit(): void {
     this.ctx = this.pixelGridCanvas.nativeElement.getContext('2d')!;
-
-    this.pixelGridCanvasContatiner.nativeElement.style.cursor = 'pointer';
-    this.pixelGridCanvas.nativeElement.addEventListener('click', this.handleMouseClick);
-    this.pixelGridCanvas.nativeElement.addEventListener('mousemove', this.handleMouseMove);
-    this.pixelGridCanvas.nativeElement.addEventListener('mouseout', this.handleMouseOut);
+    const nativeElement = this.pixelGridCanvas.nativeElement;
+    nativeElement.style.cursor = 'pointer';
+    nativeElement.addEventListener('click', this.handleMouseClick);
+    nativeElement.addEventListener('mousemove', this.handleMouseMove);
+    nativeElement.addEventListener('mouseout', this.handleMouseOut);
 
     this.pixelGrid = new PixelGrid(
       this.pixelGridService.columns,
@@ -107,30 +107,25 @@ export class NgxPixelGridComponent implements AfterViewInit {
   }
 
   handleMouseClick = (event: MouseEvent) => {
-    const tile = this.pixelGridService.whatTileIsMouseOver(event, this.tilesMatrix, event);
+    const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
+    const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
     if (tile) this.tileClick.emit({ id: tile.id, href: tile.href ?? undefined });
   }
 
   currentTileBeingHovered: ITile | undefined;
-  tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
   handleMouseMove = (event: MouseEvent) => {
     const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
     const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
     if (tile) {
-      // If the tile is the same as the one being hovered, do nothing
       if (this.currentTileBeingHovered && this.currentTileBeingHovered.id === tile.id) return;
-      // If there is a tile being hovered, reset its color
+      if (this.tooltipRef) this.tooltipRef.detach();
       if (this.currentTileBeingHovered && this.currentTileBeingHovered.id !== tile.id) {
         this.currentTileBeingHovered.color = tile.color;
       }
-      // If there is a tooltip being shown, destroy it
-      if (this.tooltipRef) this.tooltipRef.detach();
-      
-      // Set the new tile being hovered
+
       this.currentTileBeingHovered = tile;
       this.currentTileBeingHovered.color = tile.hoverColor;
 
-      // Create the tooltip strategy
       const positionStrategy = this.tooltipOverlay.position().global();
       positionStrategy.top(`${event.clientY + 15}px`).left(`${event.clientX + 15}px`);
       this.tooltipRef = this.tooltipOverlay.create({
@@ -139,7 +134,6 @@ export class NgxPixelGridComponent implements AfterViewInit {
         scrollStrategy: this.tooltipOverlay.scrollStrategies.reposition()
       });
 
-      // Create the tooltip component
       const tooltipComponent = this.tooltipRef.attach(this.tooltipPortal);
       tooltipComponent.instance.text = tile.tooltipText ?? tile.id.toString();
     }
@@ -162,7 +156,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
       color: #fff;
       padding: 5px 10px;
       border-radius: 5px;
-     }
+    }
   `],
 })
 export class NgxPixelGridTooltipComponent {

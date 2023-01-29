@@ -13,7 +13,7 @@ export declare class NgxPixelGridService implements IPixelGridOptions {
     tileHoverColor: RGB | RGBA | HEX;
     getPixelGridSize(tilesMatrix: ITile[][], gutter: number): ISize;
     mergeTilesMatrix(tilesMatrix: ITile[][], tiles: ITile[]): ITile[][];
-    whatTileIsMouseOver(tilesMatrix: ITile[][], rect: DOMRect, event: MouseEvent): ITile | boolean;
+    whatTileIsMouseOver(tilesMatrix: ITile[][], rect: DOMRect, event: MouseEvent): ITile | undefined;
     phyllotaxisLayout(tilesMatrix: ITile[][], xOffset?: number, yOffset?: number, iOffset?: number): ITile[][];
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxPixelGridService, [{ optional: true; }]>;
     static ɵprov: i0.ɵɵInjectableDeclaration<NgxPixelGridService>;

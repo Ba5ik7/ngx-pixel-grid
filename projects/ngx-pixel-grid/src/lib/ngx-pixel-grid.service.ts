@@ -65,7 +65,7 @@ export class NgxPixelGridService implements IPixelGridOptions {
     return returnTile;
   }
 
-  phyllotaxisLayout(tilesMatrix: ITile[][], xOffset = 0, yOffset = 0, iOffset = 0) {
+  phyllotaxisLayout(tilesMatrix: ITile[][], xOffset = 0, yOffset = 0, iOffset = 0): ITile[][] {
     // theta determines the spiral of the layout
     const theta = Math.PI * (3 - Math.sqrt(5));
     const pointRadius = this.tileSize.width / 2;
