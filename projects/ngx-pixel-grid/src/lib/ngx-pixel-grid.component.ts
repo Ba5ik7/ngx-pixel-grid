@@ -38,9 +38,9 @@ export class NgxPixelGridComponent implements AfterViewInit {
   hasLoadedPixels = false;
   @Input() set pixels(tiles: ITile[]) {
     if (!tiles || !tiles.length) return;
-    this.hasLoadedPixels = true;
+    this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
     requestAnimationFrame(() => {
-      this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
+      this.hasLoadedPixels = true;
     });
   }
 
@@ -128,7 +128,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
       this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
       this.currentTileBeingHovered = undefined;
     }
-    this.tooltipRef.dispose();
+    this.tooltipRef.dispose?.();
   }
 
   currentTileBeingHovered: ITile | undefined;
