@@ -5,6 +5,8 @@ export class Tile implements ITile {
     public id: string,
     public isPixel: boolean,
     public coordinates: ICoordinates,
+    public sourceCoordinates: ICoordinates,
+    public targetCoordinates: ICoordinates,
     public size: ISize,
     public color: string,
     public hoverColor: string,

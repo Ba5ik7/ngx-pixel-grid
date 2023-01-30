@@ -18,7 +18,8 @@ export class HomeComponent {
     map((result) => {
       result.listPixelBlocks.items.forEach((item: any) => {
         item.coordinates = { x: item.i, y: item.j };
-        item.tooltipText = item.hoverDisplay
+        item.tooltipText = item.hoverDisplay;
+        item.base64 = item.img;
       });
       return result.listPixelBlocks.items;
     })

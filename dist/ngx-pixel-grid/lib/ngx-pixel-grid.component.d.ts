@@ -11,6 +11,7 @@ export declare class NgxPixelGridComponent implements AfterViewInit {
     private tooltipOverlay;
     constructor(ngZone: NgZone, pixelGridService: NgxPixelGridService, tooltipOverlay: Overlay);
     tileClick: EventEmitter<ITileClickEvent>;
+    hasLoadedPixels: boolean;
     set pixels(tiles: ITile[]);
     pixelGridCanvasContatiner: ElementRef<HTMLDivElement>;
     pixelGridCanvas: ElementRef<HTMLCanvasElement>;
@@ -21,7 +22,9 @@ export declare class NgxPixelGridComponent implements AfterViewInit {
     tooltipPortal: ComponentPortal<NgxPixelGridTooltipComponent>;
     ngOnInit(): void;
     ngAfterViewInit(): void;
-    loop(): void;
+    timeDelta: number;
+    time: number;
+    loop(timestamp: number): void;
     handleMouseClick: (event: MouseEvent) => void;
     handleMouseOut: () => void;
     currentTileBeingHovered: ITile | undefined;

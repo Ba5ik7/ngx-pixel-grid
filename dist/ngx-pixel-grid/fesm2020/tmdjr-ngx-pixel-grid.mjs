@@ -4,10 +4,12 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import * as i2 from '@angular/cdk/overlay';
 
 class Tile {
-    constructor(id, isPixel, coordinates, size, color, hoverColor, tooltipText) {
+    constructor(id, isPixel, coordinates, sourceCoordinates, targetCoordinates, size, color, hoverColor, tooltipText) {
         this.id = id;
         this.isPixel = isPixel;
         this.coordinates = coordinates;
+        this.sourceCoordinates = sourceCoordinates;
+        this.targetCoordinates = targetCoordinates;
         this.size = size;
         this.color = color;
         this.hoverColor = hoverColor;
@@ -20,6 +22,7 @@ class PixelGrid {
         this.rows = rows;
         this.columns = columns;
         this.gutter = gutter;
+        this.tiles = [];
     }
     buildTilesMatrix(tileSize, tileColor, tileHoverColor) {
         const tilesMatrix = [];
@@ -29,7 +32,8 @@ class PixelGrid {
                 tilesMatrix[row][column] = new Tile((row * this.columns + column).toString(), false, {
                     x: (tileSize.width + this.gutter) * column,
                     y: (tileSize.height + this.gutter) * row
-                }, tileSize, tileColor, tileHoverColor, `Tile ${row * this.columns + column}`);
+                }, { x: 0, y: 0 }, { x: 0, y: 0 }, tileSize, tileColor, tileHoverColor, `Tile ${row * this.columns + column}`);
+                this.tiles.push(tilesMatrix[row][column]);
             }
         }
         return tilesMatrix;
@@ -53,6 +57,7 @@ class NgxPixelGridService {
     }
     createCtx(tilesMatrix, canvas) {
         const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
         const pixelGridSize = this.getPixelGridSize(tilesMatrix, this.options.gutter);
         canvas.width = pixelGridSize.width;
         canvas.height = pixelGridSize.height;
@@ -72,19 +77,14 @@ class NgxPixelGridService {
     }
     mergeTilesMatrix(tilesMatrix, tiles) {
         tiles.forEach((tile) => {
+            const img = new Image();
+            img.src = tile.base64;
             const tileCoordinates = tile.coordinates;
             const { x, y } = tileCoordinates;
-            // make a copy of tilesMatrix[x][y]
-            const test = `${tilesMatrix[x][y].id}`;
-            console.log({
-                test,
-                shouldBe: `${(x + 10) * (y + 10)}`,
-                tile
-            });
             const _tile = tilesMatrix[x][y];
             Object.assign(_tile, {
                 isPixel: true,
-                img: tile.img,
+                img,
                 color: 'rbg(0, 0, 0)',
                 href: tile.href,
                 tooltipText: tile.tooltipText
@@ -106,20 +106,35 @@ class NgxPixelGridService {
         });
         return returnTile;
     }
-    phyllotaxisLayout(tilesMatrix, xOffset = 0, yOffset = 0, iOffset = 0) {
-        // theta determines the spiral of the layout
-        const theta = Math.PI * (3 - Math.sqrt(5));
-        const pointRadius = this.options.tileSize.width / 2;
-        tilesMatrix.forEach((row, i) => {
-            const index = (i + iOffset) % tilesMatrix.length;
+    phyllotaxisLayout(tiles, xOffset = 0, yOffset = 0, iOffset = 0) {
+        // const theta = Math.PI * (6 - Math.sqrt(20));
+        // const pointRadius = 7;
+        const theta = Math.PI * (3 - Math.sqrt(10));
+        const pointRadius = 5;
+        tiles.forEach((tile, i) => {
+            const index = (i + iOffset) % tiles.length;
             const phylloX = pointRadius * Math.sqrt(index) * Math.cos(index * theta);
             const phylloY = pointRadius * Math.sqrt(index) * Math.sin(index * theta);
-            row.forEach(tile => {
-                tile.coordinates.x = xOffset + phylloX - pointRadius;
-                tile.coordinates.y = yOffset + phylloY - pointRadius;
-            });
+            tile.coordinates.x = xOffset + phylloX - pointRadius;
+            tile.coordinates.y = yOffset + phylloY - pointRadius;
+            tile.size.width = 3;
+            tile.size.height = 3;
+            // tile.color = `hsla(300, ${~~(40 * Math.random() + 60)}%, ${~~(60 * Math.random() + 20)}%, 1)`;
         });
-        return tilesMatrix;
+        return tiles;
+    }
+    gridLayout(tiles) {
+        for (let row = 0; row < this.options.rows; row++) {
+            for (let column = 0; column < this.options.columns; column++) {
+                const tile = tiles[row * this.options.columns + column];
+                tile.coordinates.x = column * (this.options.tileSize.width + this.options.gutter);
+                tile.coordinates.y = row * (this.options.tileSize.height + this.options.gutter);
+                tile.size.width = 9;
+                tile.size.height = 9;
+                // tile.color = this.options.tileColor;
+            }
+        }
+        return tiles;
     }
 }
 NgxPixelGridService.ɵfac = function NgxPixelGridService_Factory(t) { return new (t || NgxPixelGridService)(i0.ɵɵinject(NGX_PIXEL_GRID_OPTIONS, 8)); };
@@ -135,6 +150,9 @@ NgxPixelGridService.ɵprov = /*@__PURE__*/ i0.ɵɵdefineInjectable({ token: NgxP
                 type: Inject,
                 args: [NGX_PIXEL_GRID_OPTIONS]
             }] }]; }, null); })();
+function getRandomArbitaryInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 const _c0 = ["pixelGridCanvasContatiner"];
 const _c1 = ["pixelGridCanvas"];
@@ -144,15 +162,20 @@ class NgxPixelGridComponent {
         this.pixelGridService = pixelGridService;
         this.tooltipOverlay = tooltipOverlay;
         this.tileClick = new EventEmitter();
+        this.hasLoadedPixels = false;
         this.tooltipPortal = new ComponentPortal(NgxPixelGridTooltipComponent);
+        this.timeDelta = 0.005 * .05;
+        this.time = 0;
         this.handleMouseClick = (event) => {
             const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
             const tile = this.pixelGridService.whatTileIsMouseOver(this.tilesMatrix, rect, event);
             tile && this.tileClick.emit({ id: tile.id, href: tile.href ?? undefined });
         };
         this.handleMouseOut = () => {
-            this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
-            this.currentTileBeingHovered = undefined;
+            if (this.currentTileBeingHovered) {
+                this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
+                this.currentTileBeingHovered = undefined;
+            }
             this.tooltipRef.dispose();
         };
         this.handleMouseMove = (event) => {
@@ -195,7 +218,10 @@ class NgxPixelGridComponent {
     set pixels(tiles) {
         if (!tiles || !tiles.length)
             return;
-        this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
+        this.hasLoadedPixels = true;
+        requestAnimationFrame(() => {
+            this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
+        });
     }
     ngOnInit() {
         const { pixelGrid, tilesMatrix } = this.pixelGridService.buildTilesMatrix();
@@ -208,23 +234,42 @@ class NgxPixelGridComponent {
         canvas.addEventListener('click', this.handleMouseClick);
         canvas.addEventListener('mousemove', this.handleMouseMove);
         canvas.addEventListener('mouseout', this.handleMouseOut);
-        this.ngZone.runOutsideAngular(() => this.loop());
+        this.ngZone.runOutsideAngular(() => requestAnimationFrame(this.loop.bind(this)));
     }
-    loop() {
-        this.tilesMatrix.forEach(row => {
-            row.forEach(tile => {
-                if (tile.isPixel) {
-                    const img = new Image();
-                    img.src = tile.img;
-                    this.ctx.drawImage(img, tile.coordinates.x, tile.coordinates.y, tile.size.width + 1, tile.size.height + 1);
-                }
-                else {
-                    this.ctx.fillStyle = tile.color;
-                    this.ctx.fillRect(tile.coordinates.x, tile.coordinates.y, tile.size.width, tile.size.height);
-                }
-            });
+    // switchLayout = true;
+    loop(timestamp) {
+        this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
+        // this.time += this.timeDelta;
+        this.time += (Math.sin(this.time) < 0 ? .3 : -Math.cos(this.time) > 0.5 ? 0.3 : 0.8) * this.timeDelta;
+        if (this.time > 1) {
+            this.time = 0;
+            // this.switchLayout = !this.switchLayout;
+        }
+        this.pixelGrid.tiles.forEach(tile => {
+            tile.sourceCoordinates.x = tile.coordinates.x;
+            tile.sourceCoordinates.y = tile.coordinates.y;
         });
-        requestAnimationFrame(() => this.loop());
+        let tiles = this.pixelGrid.tiles;
+        if (this.hasLoadedPixels) {
+            tiles = this.pixelGridService.gridLayout(this.pixelGrid.tiles);
+        }
+        else {
+            tiles = this.pixelGridService.phyllotaxisLayout(this.pixelGrid.tiles, this.pixelGridCanvas.nativeElement.width * .5, this.pixelGridCanvas.nativeElement.height * .5);
+        }
+        tiles.forEach(tile => {
+            tile.targetCoordinates.x = tile.coordinates.x;
+            tile.targetCoordinates.y = tile.coordinates.y;
+            tile.coordinates.x = tile.sourceCoordinates.x * (1 - this.time) + tile.targetCoordinates.x * this.time;
+            tile.coordinates.y = tile.sourceCoordinates.y * (1 - this.time) + tile.targetCoordinates.y * this.time;
+            if (tile.isPixel) {
+                this.ctx.drawImage(tile.img, tile.coordinates.x, tile.coordinates.y, tile.size.width + 1, tile.size.height + 1);
+            }
+            else {
+                this.ctx.fillStyle = tile.color;
+                this.ctx.fillRect(tile.coordinates.x, tile.coordinates.y, tile.size.width, tile.size.height);
+            }
+        });
+        requestAnimationFrame(this.loop.bind(this));
     }
 }
 NgxPixelGridComponent.ɵfac = function NgxPixelGridComponent_Factory(t) { return new (t || NgxPixelGridComponent)(i0.ɵɵdirectiveInject(i0.NgZone), i0.ɵɵdirectiveInject(NgxPixelGridService), i0.ɵɵdirectiveInject(i2.Overlay)); };

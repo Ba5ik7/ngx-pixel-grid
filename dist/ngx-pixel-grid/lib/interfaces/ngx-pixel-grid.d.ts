@@ -14,6 +14,7 @@ export interface IPixelGridOptions {
     tileHoverColor: RGB | RGBA | HEX;
 }
 export interface IPixelGrid {
+    tiles?: ITile[];
     gutter: number;
     rows: number;
     columns: number;
@@ -22,11 +23,14 @@ export interface ITile {
     id: string;
     isPixel: boolean;
     coordinates: ICoordinates;
+    sourceCoordinates: ICoordinates;
+    targetCoordinates: ICoordinates;
     size: ISize;
     color: string;
     hoverColor: string;
     tooltipText?: string;
-    img?: string;
+    img?: CanvasImageSource;
+    base64?: string;
     href?: string;
 }
 export interface ICoordinates {

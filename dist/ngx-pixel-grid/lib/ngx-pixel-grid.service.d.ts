@@ -14,7 +14,8 @@ export declare class NgxPixelGridService implements IPixelGridService {
     getPixelGridSize(tilesMatrix: ITile[][], gutter: number): ISize;
     mergeTilesMatrix(tilesMatrix: ITile[][], tiles: ITile[]): ITile[][];
     whatTileIsMouseOver(tilesMatrix: ITile[][], rect: DOMRect, event: MouseEvent): ITile | undefined;
-    phyllotaxisLayout(tilesMatrix: ITile[][], xOffset?: number, yOffset?: number, iOffset?: number): ITile[][];
+    phyllotaxisLayout(tiles: ITile[], xOffset?: number, yOffset?: number, iOffset?: number): ITile[];
+    gridLayout(tiles: ITile[]): ITile[];
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxPixelGridService, [{ optional: true; }]>;
     static ɵprov: i0.ɵɵInjectableDeclaration<NgxPixelGridService>;
 }

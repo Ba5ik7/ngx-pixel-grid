@@ -35,9 +35,13 @@ export class NgxPixelGridComponent implements AfterViewInit {
   
   @Output() tileClick = new EventEmitter<ITileClickEvent>();
 
+  hasLoadedPixels = false;
   @Input() set pixels(tiles: ITile[]) {
     if (!tiles || !tiles.length) return;
-    this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
+    this.hasLoadedPixels = true;
+    requestAnimationFrame(() => {
+      this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
+    });
   }
 
   @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: ElementRef<HTMLDivElement>;
@@ -63,24 +67,54 @@ export class NgxPixelGridComponent implements AfterViewInit {
     canvas.addEventListener('mousemove', this.handleMouseMove);
     canvas.addEventListener('mouseout', this.handleMouseOut);
     
-    this.ngZone.runOutsideAngular(() => this.loop());
+    this.ngZone.runOutsideAngular(() => requestAnimationFrame(this.loop.bind(this)));
   }
   
-  loop(): void {
-    this.tilesMatrix.forEach(row => {
-      row.forEach(tile => {
-        if (tile.isPixel) {
-          const img = new Image();
-          img.src = tile.img!;
-          this.ctx.drawImage(img, tile.coordinates.x, tile.coordinates.y, tile.size.width + 1, tile.size.height + 1);
-        } else {
-          this.ctx.fillStyle = tile.color;
-          this.ctx.fillRect(tile.coordinates.x, tile.coordinates.y, tile.size.width, tile.size.height);
-        }
-      });
+
+  timeDelta = 0.005 * .05;
+  time = 0;
+  // switchLayout = true;
+  loop(timestamp: number): void {
+    
+    this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
+    // this.time += this.timeDelta;
+    this.time += (Math.sin(this.time) < 0 ? .3 : -Math.cos(this.time) > 0.5 ? 0.3 : 0.8) * this.timeDelta;
+    
+    if (this.time > 1) {
+      this.time = 0;
+      // this.switchLayout = !this.switchLayout;
+    }
+      
+    this.pixelGrid.tiles.forEach(tile => {
+      tile.sourceCoordinates.x = tile.coordinates.x;
+      tile.sourceCoordinates.y = tile.coordinates.y;
     });
 
-    requestAnimationFrame(() => this.loop());
+
+    let tiles = this.pixelGrid.tiles;
+    if(this.hasLoadedPixels) {
+      tiles = this.pixelGridService.gridLayout(this.pixelGrid.tiles);
+    } else {
+      tiles = this.pixelGridService.phyllotaxisLayout(
+        this.pixelGrid.tiles,
+        this.pixelGridCanvas.nativeElement.width * .5,
+        this.pixelGridCanvas.nativeElement.height * .5
+      ) 
+    }
+
+    tiles.forEach(tile => {
+      tile.targetCoordinates.x = tile.coordinates.x;
+      tile.targetCoordinates.y = tile.coordinates.y;
+      tile.coordinates.x = tile.sourceCoordinates.x * (1 - this.time) + tile.targetCoordinates.x * this.time;
+      tile.coordinates.y = tile.sourceCoordinates.y * (1 - this.time) + tile.targetCoordinates.y * this.time;
+      if (tile.isPixel) {
+        this.ctx.drawImage(tile.img!, tile.coordinates.x, tile.coordinates.y, tile.size.width + 1, tile.size.height + 1);
+      } else {
+        this.ctx.fillStyle = tile.color;
+        this.ctx.fillRect(tile.coordinates.x, tile.coordinates.y, tile.size.width, tile.size.height);
+      }
+    });   
+    requestAnimationFrame(this.loop.bind(this));
   }
 
   handleMouseClick = (event: MouseEvent) => {
@@ -90,8 +124,10 @@ export class NgxPixelGridComponent implements AfterViewInit {
   }
 
   handleMouseOut = () => {
-    this.currentTileBeingHovered!.color = this.pixelGridService.options.tileColor;
-    this.currentTileBeingHovered = undefined;
+    if (this.currentTileBeingHovered) {
+      this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
+      this.currentTileBeingHovered = undefined;
+    }
     this.tooltipRef.dispose();
   }
 

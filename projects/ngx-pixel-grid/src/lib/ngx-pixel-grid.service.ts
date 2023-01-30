@@ -25,6 +25,7 @@ export class NgxPixelGridService implements IPixelGridService {
 
   createCtx(tilesMatrix: ITile[][], canvas: HTMLCanvasElement): CanvasRenderingContext2D {
     const ctx = canvas.getContext('2d')!;
+    ctx.imageSmoothingEnabled = false;
     const pixelGridSize = 
       this.getPixelGridSize(tilesMatrix, this.options.gutter);
     canvas.width = pixelGridSize.width;
@@ -51,21 +52,15 @@ export class NgxPixelGridService implements IPixelGridService {
 
   mergeTilesMatrix(tilesMatrix: ITile[][], tiles: ITile[]): ITile[][] {
     tiles.forEach((tile: ITile) => {
+      const img = new Image();
+      img.src = tile.base64!;
+
       const tileCoordinates = tile.coordinates;
       const { x, y } = tileCoordinates;
-      // make a copy of tilesMatrix[x][y]
-      const test = `${tilesMatrix[x][y].id}`;
-      console.log({
-        test,
-        shouldBe: `${(x + 10)  * (y + 10)}`,
-        tile
-      });
-      
-
       const _tile = tilesMatrix[x][y];
       Object.assign(_tile, {
         isPixel: true,
-        img: tile.img,
+        img,
         color: 'rbg(0, 0, 0)',
         href: tile.href,
         tooltipText: tile.tooltipText
@@ -90,24 +85,42 @@ export class NgxPixelGridService implements IPixelGridService {
     return returnTile;
   }
 
-  phyllotaxisLayout(tilesMatrix: ITile[][], xOffset = 0, yOffset = 0, iOffset = 0): ITile[][] {
-    // theta determines the spiral of the layout
-    const theta = Math.PI * (3 - Math.sqrt(5));
-    const pointRadius = this.options.tileSize.width / 2;
+  phyllotaxisLayout(tiles: ITile[], xOffset = 0, yOffset = 0, iOffset = 0): ITile[] {
+    // const theta = Math.PI * (6 - Math.sqrt(20));
+    // const pointRadius = 7;
+    const theta = Math.PI * (3 - Math.sqrt(10));
+    const pointRadius = 5;
   
-    tilesMatrix.forEach((row, i) => {
-      const index = (i + iOffset) % tilesMatrix.length;
-      const phylloX = pointRadius * Math.sqrt(index) * Math.cos(index * theta);
-      const phylloY = pointRadius * Math.sqrt(index) * Math.sin(index * theta);
-      row.forEach(tile => {
+    tiles.forEach((tile, i) => {
+        const index = (i + iOffset) % tiles.length;
+        const phylloX = pointRadius * Math.sqrt(index) * Math.cos(index * theta);
+        const phylloY = pointRadius * Math.sqrt(index) * Math.sin(index * theta);
         tile.coordinates.x = xOffset + phylloX - pointRadius;
         tile.coordinates.y = yOffset + phylloY - pointRadius;
-      });
+        tile.size.width = 3;
+        tile.size.height = 3;
+        // tile.color = `hsla(300, ${~~(40 * Math.random() + 60)}%, ${~~(60 * Math.random() + 20)}%, 1)`;
     });
   
-    return tilesMatrix;
+    return tiles;
+  }
+
+  gridLayout(tiles: ITile[]): ITile[] {
+    for (let row = 0; row < this.options.rows; row++) {
+      for (let column = 0; column < this.options.columns; column++) {
+        const tile = tiles[row * this.options.columns + column];
+        tile.coordinates.x = column * (this.options.tileSize.width + this.options.gutter);
+        tile.coordinates.y = row * (this.options.tileSize.height + this.options.gutter);
+        tile.size.width = 9;
+        tile.size.height = 9;
+        // tile.color = this.options.tileColor;
+      }
+    }
+    return tiles;
   }
 }
 
 
-
+function getRandomArbitaryInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
