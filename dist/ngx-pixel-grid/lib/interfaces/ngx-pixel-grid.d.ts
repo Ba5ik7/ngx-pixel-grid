@@ -45,4 +45,3 @@ export interface ITileClickEvent {
     id: string;
     href?: string;
 }
-//# sourceMappingURL=ngx-pixel-grid.d.ts.map

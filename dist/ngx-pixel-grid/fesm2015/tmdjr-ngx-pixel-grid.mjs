@@ -137,29 +137,25 @@ class NgxPixelGridService {
         return tiles;
     }
 }
-NgxPixelGridService.ɵfac = function NgxPixelGridService_Factory(t) { return new (t || NgxPixelGridService)(i0.ɵɵinject(NGX_PIXEL_GRID_OPTIONS, 8)); };
-NgxPixelGridService.ɵprov = /*@__PURE__*/ i0.ɵɵdefineInjectable({ token: NgxPixelGridService, factory: NgxPixelGridService.ɵfac, providedIn: 'root' });
-(function () {
-    (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxPixelGridService, [{
+NgxPixelGridService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridService, deps: [{ token: NGX_PIXEL_GRID_OPTIONS, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+NgxPixelGridService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root'
                 }]
-        }], function () {
+        }], ctorParameters: function () {
         return [{ type: undefined, decorators: [{
                         type: Optional
                     }, {
                         type: Inject,
                         args: [NGX_PIXEL_GRID_OPTIONS]
                     }] }];
-    }, null);
-})();
+    } });
 function getRandomArbitaryInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const _c0 = ["pixelGridCanvasContatiner"];
-const _c1 = ["pixelGridCanvas"];
 class NgxPixelGridComponent {
     constructor(ngZone, pixelGridService, tooltipOverlay) {
         this.ngZone = ngZone;
@@ -279,32 +275,18 @@ class NgxPixelGridComponent {
         requestAnimationFrame(this.loop.bind(this));
     }
 }
-NgxPixelGridComponent.ɵfac = function NgxPixelGridComponent_Factory(t) { return new (t || NgxPixelGridComponent)(i0.ɵɵdirectiveInject(i0.NgZone), i0.ɵɵdirectiveInject(NgxPixelGridService), i0.ɵɵdirectiveInject(i2.Overlay)); };
-NgxPixelGridComponent.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: NgxPixelGridComponent, selectors: [["ngx-pixel-grid"]], viewQuery: function NgxPixelGridComponent_Query(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵviewQuery(_c0, 5);
-            i0.ɵɵviewQuery(_c1, 5);
-        }
-        if (rf & 2) {
-            let _t;
-            i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.pixelGridCanvasContatiner = _t.first);
-            i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.pixelGridCanvas = _t.first);
-        }
-    }, inputs: { pixels: "pixels" }, outputs: { tileClick: "tileClick" }, decls: 4, vars: 0, consts: [[1, "pixel-grid-canvas-container"], ["pixelGridCanvasContatiner", ""], ["pixelGridCanvas", ""]], template: function NgxPixelGridComponent_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵelementStart(0, "div", 0, 1);
-            i0.ɵɵelement(2, "canvas", null, 2);
-            i0.ɵɵelementEnd();
-        }
-    }, styles: [".pixel-grid-canvas-container[_ngcontent-%COMP%]{width:100%;height:100%}"], changeDetection: 0 });
-(function () {
-    (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxPixelGridComponent, [{
+NgxPixelGridComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridComponent, deps: [{ token: i0.NgZone }, { token: NgxPixelGridService }, { token: i2.Overlay }], target: i0.ɵɵFactoryTarget.Component });
+NgxPixelGridComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.2.12", type: NgxPixelGridComponent, selector: "ngx-pixel-grid", inputs: { pixels: "pixels" }, outputs: { tileClick: "tileClick" }, viewQueries: [{ propertyName: "pixelGridCanvasContatiner", first: true, predicate: ["pixelGridCanvasContatiner"], descendants: true }, { propertyName: "pixelGridCanvas", first: true, predicate: ["pixelGridCanvas"], descendants: true }], ngImport: i0, template: `
+  <div #pixelGridCanvasContatiner class="pixel-grid-canvas-container">
+    <canvas #pixelGridCanvas></canvas>
+  </div>`, isInline: true, styles: [".pixel-grid-canvas-container{width:100%;height:100%}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridComponent, decorators: [{
             type: Component,
             args: [{ selector: 'ngx-pixel-grid', template: `
   <div #pixelGridCanvasContatiner class="pixel-grid-canvas-container">
     <canvas #pixelGridCanvas></canvas>
   </div>`, changeDetection: ChangeDetectionStrategy.OnPush, styles: [".pixel-grid-canvas-container{width:100%;height:100%}\n"] }]
-        }], function () { return [{ type: i0.NgZone }, { type: NgxPixelGridService }, { type: i2.Overlay }]; }, { tileClick: [{
+        }], ctorParameters: function () { return [{ type: i0.NgZone }, { type: NgxPixelGridService }, { type: i2.Overlay }]; }, propDecorators: { tileClick: [{
                 type: Output
             }], pixels: [{
                 type: Input
@@ -314,38 +296,24 @@ NgxPixelGridComponent.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: NgxPi
             }], pixelGridCanvas: [{
                 type: ViewChild,
                 args: ['pixelGridCanvas']
-            }] });
-})();
+            }] } });
 class NgxPixelGridTooltipComponent {
 }
-NgxPixelGridTooltipComponent.ɵfac = function NgxPixelGridTooltipComponent_Factory(t) { return new (t || NgxPixelGridTooltipComponent)(); };
-NgxPixelGridTooltipComponent.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: NgxPixelGridTooltipComponent, selectors: [["ngx-pixel-grid-tooltip"]], inputs: { text: "text" }, decls: 3, vars: 1, consts: [[1, "tooltip"], [1, "tooltip-content"]], template: function NgxPixelGridTooltipComponent_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵelementStart(0, "div", 0)(1, "div", 1);
-            i0.ɵɵtext(2);
-            i0.ɵɵelementEnd()();
-        }
-        if (rf & 2) {
-            i0.ɵɵadvance(2);
-            i0.ɵɵtextInterpolate(ctx.text);
-        }
-    }, styles: [".tooltip{background-color:#000;color:#fff;padding:5px 10px;border-radius:5px}\n"], encapsulation: 3 });
-(function () {
-    (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxPixelGridTooltipComponent, [{
+NgxPixelGridTooltipComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridTooltipComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+NgxPixelGridTooltipComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.2.12", type: NgxPixelGridTooltipComponent, selector: "ngx-pixel-grid-tooltip", inputs: { text: "text" }, ngImport: i0, template: `<div class="tooltip"><div class="tooltip-content">{{text}}</div></div>`, isInline: true, styles: [".tooltip{background-color:#000;color:#fff;padding:5px 10px;border-radius:5px}\n"], encapsulation: i0.ViewEncapsulation.ShadowDom });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridTooltipComponent, decorators: [{
             type: Component,
             args: [{ selector: 'ngx-pixel-grid-tooltip', template: `<div class="tooltip"><div class="tooltip-content">{{text}}</div></div>`, encapsulation: ViewEncapsulation.ShadowDom, styles: [".tooltip{background-color:#000;color:#fff;padding:5px 10px;border-radius:5px}\n"] }]
-        }], null, { text: [{
+        }], propDecorators: { text: [{
                 type: Input
-            }] });
-})();
+            }] } });
 
 class NgxPixelGridModule {
 }
-NgxPixelGridModule.ɵfac = function NgxPixelGridModule_Factory(t) { return new (t || NgxPixelGridModule)(); };
-NgxPixelGridModule.ɵmod = /*@__PURE__*/ i0.ɵɵdefineNgModule({ type: NgxPixelGridModule });
-NgxPixelGridModule.ɵinj = /*@__PURE__*/ i0.ɵɵdefineInjector({});
-(function () {
-    (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxPixelGridModule, [{
+NgxPixelGridModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+NgxPixelGridModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridModule, declarations: [NgxPixelGridComponent], exports: [NgxPixelGridComponent] });
+NgxPixelGridModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridModule });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelGridModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [
@@ -356,9 +324,7 @@ NgxPixelGridModule.ɵinj = /*@__PURE__*/ i0.ɵɵdefineInjector({});
                         NgxPixelGridComponent
                     ]
                 }]
-        }], null, null);
-})();
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(NgxPixelGridModule, { declarations: [NgxPixelGridComponent], exports: [NgxPixelGridComponent] }); })();
+        }] });
 
 /*
  * Public API Surface of ngx-pixel-grid

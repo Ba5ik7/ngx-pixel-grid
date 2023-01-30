@@ -37,4 +37,3 @@ export declare class NgxPixelGridTooltipComponent {
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxPixelGridTooltipComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<NgxPixelGridTooltipComponent, "ngx-pixel-grid-tooltip", never, { "text": "text"; }, {}, never, never, false>;
 }
-//# sourceMappingURL=ngx-pixel-grid.component.d.ts.map

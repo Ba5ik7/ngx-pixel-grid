@@ -19,4 +19,3 @@ export declare class NgxPixelGridService implements IPixelGridService {
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxPixelGridService, [{ optional: true; }]>;
     static ɵprov: i0.ɵɵInjectableDeclaration<NgxPixelGridService>;
 }
-//# sourceMappingURL=ngx-pixel-grid.service.d.ts.map
