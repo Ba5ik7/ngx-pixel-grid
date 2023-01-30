@@ -5,3 +5,4 @@ export declare class NgxPixelGridModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<NgxPixelGridModule, [typeof i1.NgxPixelGridComponent], never, [typeof i1.NgxPixelGridComponent]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<NgxPixelGridModule>;
 }
+//# sourceMappingURL=ngx-pixel-grid.module.d.ts.map

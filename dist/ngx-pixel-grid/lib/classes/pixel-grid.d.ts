@@ -7,3 +7,4 @@ export declare class PixelGrid implements IPixelGrid {
     constructor(rows: number, columns: number, gutter: number);
     buildTilesMatrix(tileSize: ISize, tileColor: string, tileHoverColor: string): ITile[][];
 }
+//# sourceMappingURL=pixel-grid.d.ts.map

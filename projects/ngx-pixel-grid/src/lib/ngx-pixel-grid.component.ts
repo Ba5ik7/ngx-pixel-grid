@@ -38,9 +38,9 @@ export class NgxPixelGridComponent implements AfterViewInit {
   hasLoadedPixels = false;
   @Input() set pixels(tiles: ITile[]) {
     if (!tiles || !tiles.length) return;
-    this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
+    this.hasLoadedPixels = true;
     requestAnimationFrame(() => {
-      this.hasLoadedPixels = true;
+      this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
     });
   }
 
@@ -78,7 +78,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
     
     this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
     // this.time += this.timeDelta;
-    this.time += (Math.sin(this.time) < 0 ? .3 : -Math.cos(this.time) > 0.5 ? 0.3 : 0.8) * this.timeDelta;
+    this.time += (Math.sin(this.time) < 0 ? .3 : Math.cos(this.time) > 0.5 ? 0.3 : 0.8) * this.timeDelta;
     
     if (this.time > 1) {
       this.time = 0;
@@ -99,7 +99,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
         this.pixelGrid.tiles,
         this.pixelGridCanvas.nativeElement.width * .5,
         this.pixelGridCanvas.nativeElement.height * .5
-      ) 
+      );
     }
 
     tiles.forEach(tile => {
