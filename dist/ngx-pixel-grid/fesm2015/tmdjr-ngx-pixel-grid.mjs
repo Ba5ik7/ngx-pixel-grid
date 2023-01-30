@@ -177,11 +177,12 @@ class NgxPixelGridComponent {
             tile && this.tileClick.emit({ id: tile.id, href: (_a = tile.href) !== null && _a !== void 0 ? _a : undefined });
         };
         this.handleMouseOut = () => {
+            var _a, _b;
             if (this.currentTileBeingHovered) {
                 this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
                 this.currentTileBeingHovered = undefined;
             }
-            this.tooltipRef.dispose();
+            (_b = (_a = this.tooltipRef).dispose) === null || _b === void 0 ? void 0 : _b.call(_a);
         };
         this.handleMouseMove = (event) => {
             var _a;
@@ -224,9 +225,9 @@ class NgxPixelGridComponent {
     set pixels(tiles) {
         if (!tiles || !tiles.length)
             return;
-        this.hasLoadedPixels = true;
+        this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
         requestAnimationFrame(() => {
-            this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
+            this.hasLoadedPixels = true;
         });
     }
     ngOnInit() {

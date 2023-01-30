@@ -176,7 +176,7 @@ class NgxPixelGridComponent {
                 this.currentTileBeingHovered.color = this.pixelGridService.options.tileColor;
                 this.currentTileBeingHovered = undefined;
             }
-            this.tooltipRef.dispose();
+            this.tooltipRef.dispose?.();
         };
         this.handleMouseMove = (event) => {
             const rect = this.pixelGridCanvas.nativeElement.getBoundingClientRect();
@@ -218,9 +218,9 @@ class NgxPixelGridComponent {
     set pixels(tiles) {
         if (!tiles || !tiles.length)
             return;
-        this.hasLoadedPixels = true;
+        this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
         requestAnimationFrame(() => {
-            this.tilesMatrix = this.pixelGridService.mergeTilesMatrix(this.tilesMatrix, tiles);
+            this.hasLoadedPixels = true;
         });
     }
     ngOnInit() {
