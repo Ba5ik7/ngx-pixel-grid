@@ -44,7 +44,7 @@ export class NgxPixelGridComponent implements AfterViewInit {
     });
   }
 
-  @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: ElementRef<HTMLDivElement>;
+  // @ViewChild('pixelGridCanvasContatiner') pixelGridCanvasContatiner!: ElementRef<HTMLDivElement>;
   @ViewChild('pixelGridCanvas') pixelGridCanvas!: ElementRef<HTMLCanvasElement>;
 
   ctx!: CanvasRenderingContext2D;

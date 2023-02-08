@@ -13,7 +13,6 @@ export declare class NgxPixelGridComponent implements AfterViewInit {
     tileClick: EventEmitter<ITileClickEvent>;
     hasLoadedPixels: boolean;
     set pixels(tiles: ITile[]);
-    pixelGridCanvasContatiner: ElementRef<HTMLDivElement>;
     pixelGridCanvas: ElementRef<HTMLCanvasElement>;
     ctx: CanvasRenderingContext2D;
     pixelGrid: PixelGrid;

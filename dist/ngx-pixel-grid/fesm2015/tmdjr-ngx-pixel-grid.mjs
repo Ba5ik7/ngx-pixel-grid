@@ -158,8 +158,7 @@ function getRandomArbitaryInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const _c0 = ["pixelGridCanvasContatiner"];
-const _c1 = ["pixelGridCanvas"];
+const _c0 = ["pixelGridCanvas"];
 class NgxPixelGridComponent {
     constructor(ngZone, pixelGridService, tooltipOverlay) {
         this.ngZone = ngZone;
@@ -288,11 +287,9 @@ NgxPixelGridComponent.ɵfac = function NgxPixelGridComponent_Factory(t) { return
 NgxPixelGridComponent.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: NgxPixelGridComponent, selectors: [["ngx-pixel-grid"]], viewQuery: function NgxPixelGridComponent_Query(rf, ctx) {
         if (rf & 1) {
             i0.ɵɵviewQuery(_c0, 5);
-            i0.ɵɵviewQuery(_c1, 5);
         }
         if (rf & 2) {
             let _t;
-            i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.pixelGridCanvasContatiner = _t.first);
             i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.pixelGridCanvas = _t.first);
         }
     }, inputs: { pixels: "pixels" }, outputs: { tileClick: "tileClick" }, decls: 4, vars: 0, consts: [[1, "pixel-grid-canvas-container"], ["pixelGridCanvasContatiner", ""], ["pixelGridCanvas", ""]], template: function NgxPixelGridComponent_Template(rf, ctx) {
@@ -313,9 +310,6 @@ NgxPixelGridComponent.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: NgxPi
                 type: Output
             }], pixels: [{
                 type: Input
-            }], pixelGridCanvasContatiner: [{
-                type: ViewChild,
-                args: ['pixelGridCanvasContatiner']
             }], pixelGridCanvas: [{
                 type: ViewChild,
                 args: ['pixelGridCanvas']
