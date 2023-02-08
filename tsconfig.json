@@ -26,8 +26,8 @@
       "ngx-pixel-grid": [
         "dist/ngx-pixel-grid"
       ],
-      "terry-lib": [
-        "dist/terry-lib"
+      "demo": [
+        "dist/demo"
       ]
     }
   },

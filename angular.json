@@ -147,37 +147,6 @@
         }
       }
     },
-    "terry-lib": {
-      "projectType": "library",
-      "root": "projects/terry-lib",
-      "sourceRoot": "projects/terry-lib/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/terry-lib/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/terry-lib/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/terry-lib/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/terry-lib/src/test.ts",
-            "tsConfig": "projects/terry-lib/tsconfig.spec.json",
-            "karmaConfig": "projects/terry-lib/karma.conf.js"
-          }
-        }
-      }
-    },
     "ngx-pixel-grid": {
       "projectType": "library",
       "root": "projects/ngx-pixel-grid",
