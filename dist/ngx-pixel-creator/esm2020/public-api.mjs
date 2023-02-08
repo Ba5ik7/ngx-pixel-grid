@@ -1,0 +1,7 @@
+/*
+ * Public API Surface of ngx-pixel-creator
+ */
+export * from './lib/ngx-pixel-creator.service';
+export * from './lib/ngx-pixel-creator.component';
+export * from './lib/ngx-pixel-creator.module';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3Byb2plY3RzL25neC1waXhlbC1jcmVhdG9yL3NyYy9wdWJsaWMtYXBpLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOztHQUVHO0FBRUgsY0FBYyxpQ0FBaUMsQ0FBQztBQUNoRCxjQUFjLG1DQUFtQyxDQUFDO0FBQ2xELGNBQWMsZ0NBQWdDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogUHVibGljIEFQSSBTdXJmYWNlIG9mIG5neC1waXhlbC1jcmVhdG9yXG4gKi9cblxuZXhwb3J0ICogZnJvbSAnLi9saWIvbmd4LXBpeGVsLWNyZWF0b3Iuc2VydmljZSc7XG5leHBvcnQgKiBmcm9tICcuL2xpYi9uZ3gtcGl4ZWwtY3JlYXRvci5jb21wb25lbnQnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvbmd4LXBpeGVsLWNyZWF0b3IubW9kdWxlJztcbiJdfQ==

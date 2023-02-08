@@ -1,0 +1,31 @@
+{
+  "name": "@tmdjr/ngx-pixel-creator",
+  "version": "0.0.2",
+  "peerDependencies": {
+    "@angular/common": "^14.2.0",
+    "@angular/core": "^14.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "module": "fesm2015/tmdjr-ngx-pixel-creator.mjs",
+  "es2020": "fesm2020/tmdjr-ngx-pixel-creator.mjs",
+  "esm2020": "esm2020/tmdjr-ngx-pixel-creator.mjs",
+  "fesm2020": "fesm2020/tmdjr-ngx-pixel-creator.mjs",
+  "fesm2015": "fesm2015/tmdjr-ngx-pixel-creator.mjs",
+  "typings": "index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2020": "./esm2020/tmdjr-ngx-pixel-creator.mjs",
+      "es2020": "./fesm2020/tmdjr-ngx-pixel-creator.mjs",
+      "es2015": "./fesm2015/tmdjr-ngx-pixel-creator.mjs",
+      "node": "./fesm2015/tmdjr-ngx-pixel-creator.mjs",
+      "default": "./fesm2020/tmdjr-ngx-pixel-creator.mjs"
+    }
+  },
+  "sideEffects": false
+}
