@@ -71,27 +71,27 @@ export class NgxPixelGridComponent implements AfterViewInit {
   }
   
 
-  timeDelta = 0.005 * .05;
-  time = 0;
+  // timeDelta = 0.005 * .05;
+  // time = 0;
   // switchLayout = true;
   loop(timestamp: number): void {
     
     this.ctx.clearRect(0, 0, this.pixelGridCanvas.nativeElement.width, this.pixelGridCanvas.nativeElement.height);
     // this.time += this.timeDelta;
-    this.time += (Math.sin(this.time) < 0 ? .3 : Math.cos(this.time) > 0.5 ? 0.3 : 0.8) * this.timeDelta;
+    // this.time += (Math.sin(this.time) < 0 ? .3 : Math.cos(this.time) > 0.5 ? 0.3 : 0.8) * this.timeDelta;
     
-    if (this.time > 1) {
-      this.time = 0;
-      // this.switchLayout = !this.switchLayout;
-    }
+    // if (this.time > 1) {
+    //   this.time = 0;
+    //   // this.switchLayout = !this.switchLayout;
+    // }
       
-    this.pixelGrid.tiles.forEach(tile => {
-      tile.sourceCoordinates.x = tile.coordinates.x;
-      tile.sourceCoordinates.y = tile.coordinates.y;
-    });
+    // this.pixelGrid.tiles.forEach(tile => {
+    //   tile.sourceCoordinates.x = tile.coordinates.x;
+    //   tile.sourceCoordinates.y = tile.coordinates.y;
+    // });
 
 
-    let tiles = this.pixelGridService.gridLayout(this.pixelGrid.tiles);
+    // let tiles = this.pixelGridService.gridLayout(this.pixelGrid.tiles);
     // let tiles = this.pixelGrid.tiles;
     // if(this.hasLoadedPixels) {
     //   tiles = this.pixelGridService.gridLayout(this.pixelGrid.tiles);
@@ -103,11 +103,12 @@ export class NgxPixelGridComponent implements AfterViewInit {
     //   );
     // }
 
-    tiles.forEach(tile => {
-      tile.targetCoordinates.x = tile.coordinates.x;
-      tile.targetCoordinates.y = tile.coordinates.y;
-      tile.coordinates.x = tile.sourceCoordinates.x * (1 - this.time) + tile.targetCoordinates.x * this.time;
-      tile.coordinates.y = tile.sourceCoordinates.y * (1 - this.time) + tile.targetCoordinates.y * this.time;
+    this.pixelGrid.tiles.forEach(tile => {
+    // tiles.forEach(tile => {
+      // tile.targetCoordinates.x = tile.coordinates.x;
+      // tile.targetCoordinates.y = tile.coordinates.y;
+      // tile.coordinates.x = tile.sourceCoordinates.x * (1 - this.time) + tile.targetCoordinates.x * this.time;
+      // tile.coordinates.y = tile.sourceCoordinates.y * (1 - this.time) + tile.targetCoordinates.y * this.time;
       if (tile.isPixel) {
         this.ctx.drawImage(tile.img!, tile.coordinates.x, tile.coordinates.y, tile.size.width + 1, tile.size.height + 1);
       } else {
