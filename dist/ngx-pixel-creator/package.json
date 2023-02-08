@@ -1,6 +1,6 @@
 {
   "name": "@tmdjr/ngx-pixel-creator",
-  "version": "0.0.0-watch+1675828185135",
+  "version": "0.0.0-watch+1675835626212",
   "peerDependencies": {
     "@angular/common": "^14.2.0",
     "@angular/core": "^14.2.0"
