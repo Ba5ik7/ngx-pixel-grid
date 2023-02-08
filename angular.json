@@ -177,6 +177,37 @@
           }
         }
       }
+    },
+    "ngx-pixel-creator": {
+      "projectType": "library",
+      "root": "projects/ngx-pixel-creator",
+      "sourceRoot": "projects/ngx-pixel-creator/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-pixel-creator/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-pixel-creator/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-pixel-creator/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-pixel-creator/src/test.ts",
+            "tsConfig": "projects/ngx-pixel-creator/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-pixel-creator/karma.conf.js"
+          }
+        }
+      }
     }
   },
   "cli": {

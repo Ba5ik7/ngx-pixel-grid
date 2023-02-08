@@ -26,6 +26,9 @@
       "ngx-pixel-grid": [
         "dist/ngx-pixel-grid"
       ],
+      "ngx-pixel-creator": [
+        "dist/ngx-pixel-creator"
+      ],
       "demo": [
         "dist/demo"
       ]
