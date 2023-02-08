@@ -7,7 +7,10 @@ const routes: Routes = [
     pathMatch: 'full',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
   },
-  { path: 'ngx-pixel-creator-demo', loadChildren: () => import('./pages/ngx-pixel-creator-demo/ngx-pixel-creator-demo.module').then(m => m.NgxPixelCreatorDemoModule) }
+  {
+    path: 'ngx-pixel-creator-demo',
+    loadChildren: () => import('./pages/ngx-pixel-creator-demo/ngx-pixel-creator-demo.module').then(m => m.NgxPixelCreatorDemoModule)
+  }
 ];
 
 @NgModule({

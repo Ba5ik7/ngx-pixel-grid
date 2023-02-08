@@ -1,0 +1,59 @@
+.ngx-pixel-creator-demo-background {
+  overflow: hidden;
+  position: relative;
+  height: 420px;
+}
+
+.ngx-pixel-creator-demo-background::before {
+  content: '';
+  position: absolute;
+  background-image: url('../../../assets/img/palette.svg');
+  background-size: 500px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-repeat: no-repeat;
+  background-position: 80% 40px;
+  opacity: 0.2;
+}
+
+.ngx-pixel-creator-demo-section {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.ngx-pixel-creator-demo-headline {
+  h1 {
+    font-size: 56px;
+    font-weight: bold;
+    line-height: 56px;
+    margin: 15px 5px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 28px;
+    margin: 15px 0 25px 0;
+  }
+}
+
+.ngx-pixel-creator-demo-start {
+  text-align: center;
+  margin: 15px 0 0 0;
+
+  .mat-raised-button {
+    font-size: 15px;
+  }
+}
+
+.ngx-pixel-creator-demo-main {
+  padding: 16px;
+  width: 1031px;
+  margin: auto;
+}

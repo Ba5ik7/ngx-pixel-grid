@@ -91,16 +91,17 @@ export class NgxPixelGridComponent implements AfterViewInit {
     });
 
 
-    let tiles = this.pixelGrid.tiles;
-    if(this.hasLoadedPixels) {
-      tiles = this.pixelGridService.gridLayout(this.pixelGrid.tiles);
-    } else {
-      tiles = this.pixelGridService.phyllotaxisLayout(
-        this.pixelGrid.tiles,
-        this.pixelGridCanvas.nativeElement.width * .5,
-        this.pixelGridCanvas.nativeElement.height * .5
-      );
-    }
+    let tiles = this.pixelGridService.gridLayout(this.pixelGrid.tiles);
+    // let tiles = this.pixelGrid.tiles;
+    // if(this.hasLoadedPixels) {
+    //   tiles = this.pixelGridService.gridLayout(this.pixelGrid.tiles);
+    // } else {
+    //   tiles = this.pixelGridService.phyllotaxisLayout(
+    //     this.pixelGrid.tiles,
+    //     this.pixelGridCanvas.nativeElement.width * .5,
+    //     this.pixelGridCanvas.nativeElement.height * .5
+    //   );
+    // }
 
     tiles.forEach(tile => {
       tile.targetCoordinates.x = tile.coordinates.x;

@@ -4,52 +4,53 @@ import { Injectable, Component, NgModule } from '@angular/core';
 class NgxPixelCreatorService {
     constructor() { }
 }
-NgxPixelCreatorService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelCreatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-NgxPixelCreatorService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelCreatorService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelCreatorService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: function () { return []; } });
+NgxPixelCreatorService.ɵfac = function NgxPixelCreatorService_Factory(t) { return new (t || NgxPixelCreatorService)(); };
+NgxPixelCreatorService.ɵprov = /*@__PURE__*/ i0.ɵɵdefineInjectable({ token: NgxPixelCreatorService, factory: NgxPixelCreatorService.ɵfac, providedIn: 'root' });
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxPixelCreatorService, [{
+        type: Injectable,
+        args: [{
+                providedIn: 'root'
+            }]
+    }], function () { return []; }, null); })();
 
 class NgxPixelCreatorComponent {
     constructor() { }
     ngOnInit() {
     }
 }
-NgxPixelCreatorComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelCreatorComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-NgxPixelCreatorComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.2.12", type: NgxPixelCreatorComponent, selector: "ngx-pixel-creator", ngImport: i0, template: `
-    <p>
-      ngx-pixel-creator works!
-    </p>
-  `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelCreatorComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'ngx-pixel-creator', template: `
+NgxPixelCreatorComponent.ɵfac = function NgxPixelCreatorComponent_Factory(t) { return new (t || NgxPixelCreatorComponent)(); };
+NgxPixelCreatorComponent.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: NgxPixelCreatorComponent, selectors: [["ngx-pixel-creator"]], decls: 2, vars: 0, template: function NgxPixelCreatorComponent_Template(rf, ctx) { if (rf & 1) {
+        i0.ɵɵelementStart(0, "p");
+        i0.ɵɵtext(1, " ngx-pixel-creator works! ");
+        i0.ɵɵelementEnd();
+    } }, encapsulation: 2 });
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxPixelCreatorComponent, [{
+        type: Component,
+        args: [{ selector: 'ngx-pixel-creator', template: `
     <p>
       ngx-pixel-creator works!
     </p>
   ` }]
-        }], ctorParameters: function () { return []; } });
+    }], function () { return []; }, null); })();
 
 class NgxPixelCreatorModule {
 }
-NgxPixelCreatorModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelCreatorModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-NgxPixelCreatorModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelCreatorModule, declarations: [NgxPixelCreatorComponent], exports: [NgxPixelCreatorComponent] });
-NgxPixelCreatorModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelCreatorModule });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.12", ngImport: i0, type: NgxPixelCreatorModule, decorators: [{
-            type: NgModule,
-            args: [{
-                    declarations: [
-                        NgxPixelCreatorComponent
-                    ],
-                    imports: [],
-                    exports: [
-                        NgxPixelCreatorComponent
-                    ]
-                }]
-        }] });
+NgxPixelCreatorModule.ɵfac = function NgxPixelCreatorModule_Factory(t) { return new (t || NgxPixelCreatorModule)(); };
+NgxPixelCreatorModule.ɵmod = /*@__PURE__*/ i0.ɵɵdefineNgModule({ type: NgxPixelCreatorModule });
+NgxPixelCreatorModule.ɵinj = /*@__PURE__*/ i0.ɵɵdefineInjector({});
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxPixelCreatorModule, [{
+        type: NgModule,
+        args: [{
+                declarations: [
+                    NgxPixelCreatorComponent
+                ],
+                imports: [],
+                exports: [
+                    NgxPixelCreatorComponent
+                ]
+            }]
+    }], null, null); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(NgxPixelCreatorModule, { declarations: [NgxPixelCreatorComponent], exports: [NgxPixelCreatorComponent] }); })();
 
 /*
  * Public API Surface of ngx-pixel-creator

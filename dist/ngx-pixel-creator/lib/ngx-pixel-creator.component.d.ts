@@ -6,3 +6,4 @@ export declare class NgxPixelCreatorComponent implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxPixelCreatorComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<NgxPixelCreatorComponent, "ngx-pixel-creator", never, {}, {}, never, never, false>;
 }
+//# sourceMappingURL=ngx-pixel-creator.component.d.ts.map

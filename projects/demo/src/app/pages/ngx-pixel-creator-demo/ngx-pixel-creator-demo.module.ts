@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NgxPixelCreatorDemoRoutingModule } from './ngx-pixel-creator-demo-routing.module';
 import { NgxPixelCreatorDemoComponent } from './ngx-pixel-creator-demo.component';
 import { NgxPixelCreatorModule } from 'ngx-pixel-creator';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { NgxPixelCreatorModule } from 'ngx-pixel-creator';
   ],
   imports: [
     CommonModule,
+    MatCardModule,
     NgxPixelCreatorDemoRoutingModule,
     NgxPixelCreatorModule
   ]

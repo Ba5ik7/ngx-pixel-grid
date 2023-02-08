@@ -1,0 +1,30 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin theme($theme) {
+  $primary: map.get($theme, primary);
+  $accent: map.get($theme, accent);
+  $warn: map.get($theme, warn);
+  $background: map.get($theme, background);
+  $foreground: map.get($theme, foreground);
+
+  app-ngx-pixel-creator-demo {
+    color: mat.get-color-from-palette($foreground, text);
+
+    .ngx-pixel-creator-demo-background {
+      background: mat.get-color-from-palette($primary);
+    }
+
+    .ngx-pixel-creator-demo-headline {
+      color: mat.get-color-from-palette($primary, default-contrast);
+    }
+
+    .ngx-pixel-creator-demo-start {
+      color: mat.get-color-from-palette($primary);
+    }
+
+    .ngx-pixel-creator-demo-row {
+      color: mat.get-color-from-palette($foreground, secondary-text);
+    }
+  }
+}

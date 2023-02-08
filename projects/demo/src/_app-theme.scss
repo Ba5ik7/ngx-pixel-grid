@@ -2,6 +2,7 @@
 
 @use 'sass:map';
 @use './app/pages/home/home-theme';
+@use './app/pages/ngx-pixel-creator-demo/ngx-pixel-creator-demo-theme';
 @use './app/components/navbar/navbar-theme';
 
 // Styles for the docs app that are based on the current theme.
@@ -30,5 +31,6 @@
   }
 
   @include home-theme.theme($theme);
+  @include ngx-pixel-creator-demo-theme.theme($theme);
   @include navbar-theme.theme($theme);
 }
